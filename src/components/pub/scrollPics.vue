@@ -1,0 +1,181 @@
+<template>
+  <div class="wholeDiv" v-loading="loading">
+    <!--      头部滚动图-->
+    <div class="a" @mouseleave="leave">
+      <el-image
+          class="b"
+          :src="mainPic"
+          :initial-index="index"
+          fit="cover"
+          :preview-src-list="picUrl"
+          hide-on-click-modal
+          close-on-press-escape
+      />
+      <div class="c">
+        <div v-for="i in [0,1,2,3,4]" class="d" @mouseover="over(i)" :class="{dd:isSelected[i]}"><img :src="picUrl[i]">
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'scrollPics',
+  data() {
+    return {
+      loading: true,
+      index: 0,
+      randomList: [1, 1, 1, 1, 1],
+      picUrl: [],
+      mainPic: '',
+      isSelected: [true, false, false, false, false],
+      integral: null,
+    }
+  },
+  created() {
+    this.randomList = this.randomNum(1, 167, 5);
+    this.picUrl = this.randomList.map((item) => {
+      return this.baseURL + '/source/images/index/' + item + '.jpg'
+    });
+    //将picUrl中的图片存下来,返回链接数组
+    this.mainPic = this.picUrl[0];
+    // 开始循环
+    this.scroll();
+    this.loading = false;
+  },
+  methods: {
+    //随机产生不重复的5个数
+    randomNum(min, max, n) {
+      var r = [];
+      for (var i = 0; i < n; i++) {
+        var flag = true;
+        var random = Math.floor(Math.random() * (max - min + 1) + min);
+        for (var j = 0; j < r.length; j++) {
+          if (random === r[j]) {
+            flag = false;
+            break;
+          }
+        }
+        if (flag) {
+          r.push(random);
+        } else {
+          i--;
+        }
+      }
+      return r;
+    },
+    scroll() {
+      this.integral = setInterval(() => {
+        for (var i = 0; i < 5; i++) {
+          if (this.isSelected[i]) {
+            let select = i === 4 ? 0 : i + 1;
+            this.isSelected[select] = true;
+            this.index = select;
+            this.mainPic = this.picUrl[select];
+            this.isSelected[i] = false;
+            break;
+          }
+        }
+      }, 4000)
+
+    },
+    over(index) {
+      this.index = index;
+      this.mainPic = this.picUrl[index];
+      //取消循环
+      this.integral = clearInterval(this.integral);
+      // clearInterval(this.integral);
+      for (var i = 0; i < 5; i++) {
+        this.isSelected[i] = i === index;
+      }
+
+
+    },
+    leave() {
+      if (this.integral == null) {
+        this.scroll();
+      }
+
+    }
+  }
+}
+
+
+</script>
+
+<style scoped>
+.wholeDiv {
+  background: #fff;
+  float: left;
+  width: 65%;
+  margin-left: 60px;
+  border-radius: 5px;
+  margin-top: 60px;
+}
+
+.wholeDiv > div {
+  width: 100%;
+}
+
+.a {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  margin: 5px 0 5px 0;
+}
+
+.b {
+  width: 100%;
+  height: 434px;
+  transition: all .3s;
+  background-size: cover;
+  border-radius: 10px 5px 5px 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  /*box-shadow: 1px 3px 11px #134857;*/
+
+}
+
+.c {
+  width: 19%;
+  height: 434px;
+  display: flex;
+  /* 纵向布局 */
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.d {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  right: 0;
+  transition: .3s;
+  overflow: hidden;
+  border-radius: 5px;
+}
+
+.d img {
+  /*position: absolute;*/
+  width: 100%;
+  height: 100%;
+  /* 小图片上移 */
+  /*transform: translate(0, -50px);*/
+  transition: .3s;
+  /*right: 0;*/
+  /*height: 100%;*/
+}
+
+.d.dd {
+  opacity: 0;
+  right: 250px;
+}
+
+.d:hover img {
+  opacity: 0;
+  right: 250px;
+}
+
+</style>
