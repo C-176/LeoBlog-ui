@@ -7,11 +7,12 @@
     </template>
 
     <template v-else>
-
-
       <el-empty v-if="comments.length===0" description="暂无评论，快发表你的评论吧"/>
       <a-list v-else :data-source="comments" item-layout="vertical" size="small">
         <template #renderItem="{item}">
+          <template v-if="item.articleTitle.trim() != ''">
+              <a style="font-size: 16px;margin:10px 0 ; display: block" @click="$router.push('/article/'+item.articleId)"><span v-html="item.articleTitle"></span></a>
+          </template>
           <a-list-item :key="item.commentId" :extra="item.commentUpdateTime">
             <template #actions>
             <span>
@@ -27,13 +28,13 @@
             </span>
             </template>
 
-            <a-list-item-meta :description="item.commentContent">
+            <a-list-item-meta :description="item.commentContent" :title="item.user.userNickname">
               {{ item.commentUpdateTime }}
-              <template v-if="item.articleTitle.trim() != ''" #title>
-                <a @click="$router.push('/article/'+item.articleId)"><span v-html="item.articleTitle"></span></a>
-              </template>
+
               <template #avatar>
-                <a-avatar :src="p(item.user.userProfilePhoto)"/>
+                <user :user="item.user">
+                  <a-avatar :src="p(item.user.userProfilePhoto)"/>
+                </user>
               </template>
             </a-list-item-meta>
           </a-list-item>
@@ -55,9 +56,11 @@
                   </span>
               </template>
 
-              <a-list-item-meta :description="i.commentContent">
+              <a-list-item-meta :description="i.commentContent" :title="i.user.userNickname">
                 <template #avatar>
-                  <a-avatar :src="p(i.user.userProfilePhoto)"/>
+                  <user :user="i.user">
+                    <a-avatar :src="p(i.user.userProfilePhoto)"/>
+                  </user>
                 </template>
               </a-list-item-meta>
 
@@ -89,6 +92,7 @@
 
 <script>
 import {DeleteOutlined, EnterOutlined, LikeOutlined, MessageOutlined} from "@ant-design/icons-vue";
+import user from "@/components/pub/user";
 
 export default {
   name: "commentTemplate",
@@ -97,7 +101,8 @@ export default {
     LikeOutlined,
     MessageOutlined,
     DeleteOutlined,
-    EnterOutlined
+    EnterOutlined,
+    user
   },
   data() {
     return {
@@ -198,6 +203,13 @@ export default {
 
 #enter:hover {
   background: rgba(124, 146, 156, 0.68);
+}
+
+:deep(.ant-list-vertical .ant-list-item-meta-title){
+  font-size: 14px;
+}
+:deep(.ant-list-vertical .ant-list-item-extra){
+  color: #8b8b8b;
 }
 
 .commentIn {

@@ -6,13 +6,15 @@ import store from '@/store';
 import Swal from "sweetalert2";
 import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css'
-
+// import APlayer from '@moefe/vue-aplayer';
 import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
 import '@/static/css/daemon.css'
 import '@/static/css/loading.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import bread from "@/components/pub/bread";
+// 第一步导入默认图片
+import IMG_SRC from '@/source/images/index/1.jpg'
 
 //全局注册一个a函数
 const app = createApp(App)
@@ -44,6 +46,7 @@ axios.interceptors.request.use(
         return Promise.reject(error)
     }
 );
+
 app.config.globalProperties.$axios = axios
 app.config.globalProperties.$sa = (msg, icon) => {
     Swal.fire({
@@ -79,15 +82,13 @@ app.config.globalProperties.$moments = (stamp) => {
     return Y + M + D + h + m + s;
 }
 app.config.globalProperties.p = (pic) => {
-    if(pic=='') return pic
-    if(pic) {
+    if (pic == '') return pic
+    if (pic) {
         return pic.startsWith('http') ? pic : app.config.globalProperties.baseURL + pic
     } else {
         return IMG_SRC
     }
 }
-// 第一步导入默认图片
-import IMG_SRC from '@/source/images/index/1.jpg'
 
 app.config.globalProperties.$imgOnerror = e => {
     let img = e.srcElement
@@ -96,6 +97,11 @@ app.config.globalProperties.$imgOnerror = e => {
 }
 
 app.use(router).use(store).use(ElementPlus).use(Antd).component('bread', bread)
+// app.use(APlayer, {
+//     defaultCover: '',
+//     productionTip: true,
+// });
+
 app.mount('#app')
 
 export default app

@@ -33,9 +33,11 @@
         <span v-html="article.articleContent"></span>
       </div>
 
-      <div class="updateTime"><span class="iconfont">&#xe6fb;</span>最后更新时间: {{ article.articleUpdateDate }}</div>
+      <div class="updateTime"><span class="iconfont">&#xe6fb;</span>最后更新时间: {{ article.articleUpdateDate }}
+      </div>
       <a-divider style="height: 1px"/>
       <el-affix position="bottom" target=".content" :offset="10">
+
         <template v-if="article.isArticle === 1">
           <div class="toolbar">
             <a class="like" @click="like(article.articleId)">点赞<span
@@ -44,20 +46,27 @@
                 class="iconfont">&#xe646;</span>{{ article.articleComments }} </a>
             <a class="collect" @click="collect(article.articleId)">收藏<span
                 class="iconfont">&#xe8b9;</span>{{ article.articleCollects }} </a>
-            <a class="share" @click="share(article.articleId)">分享<span class="iconfont">&#xe73a;</span> </a>
+            <a class="share" @click="share(article.articleId)">分享<span class="iconfont">&#xe73a;</span>
+            </a>
           </div>
-          <template v-if="showComment">
-      <textarea v-model="commentIn" class="commentIn" placeholder="请输入内容"
-                @keyup.enter="saveComment(-1)"></textarea>
+        </template>
+      </el-affix>
+        <transition name="fade">
+          <div v-if="showComment">
+            <textarea v-model="commentIn" class="commentIn" placeholder="请输入内容"
+                      @keyup.enter="saveComment(-1)">
+            </textarea>
             <a-button id="enter" type="primary" size="small" shape="round" ghost
                       @click="saveComment(-1,article.user.userId)">
               <template #icon>
                 <enter-outlined/>
               </template>
             </a-button>
-          </template>
-        </template>
-      </el-affix>
+          </div>
+
+        </transition>
+
+
     </template>
 
   </div>
@@ -212,7 +221,9 @@ export default {
       })
     },
     comment() {
+      console.log(this.showComment)
       this.showComment = !this.showComment
+      console.log(this.showComment)
       if (!this.showComment) {
         this.commentIn = ""
         //清除行内样式
@@ -290,10 +301,10 @@ export default {
     }
 
   },
-  watch:{
-    article(){
-      this.$nextTick(()=>{
-        this.loading=false
+  watch: {
+    article() {
+      this.$nextTick(() => {
+        this.loading = false
       })
     }
   }
@@ -313,6 +324,14 @@ export default {
 
 #enter:hover {
   background: rgba(124, 146, 156, 0.68);
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .3s;
+}
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
 }
 
 .commentIn {

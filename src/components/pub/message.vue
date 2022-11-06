@@ -1,43 +1,45 @@
 <template>
-    <div class="whole" v-if="$store.state.messageVisible">
-        <div class="logo">
-            <img id="logo" :src="logoSrc" alt="">
-            <!--      <span>消息盒子</span>-->
+    <transition name="fade">
+        <div class="whole" v-show="$store.state.messageVisible">
+            <div class="logo">
+                <img id="logo" :src="logoSrc" alt="">
+                <!--      <span>消息盒子</span>-->
 
+            </div>
+            <a-tooltip title="关闭" id="close" style="position: fixed;top: 100px;right: 10px">
+                <a-button type="dashed" shape="circle" size="large"
+                          style="position: absolute;top: 10px;right: 10px"
+                          @click="$store.commit('changeMessageVisible',!$store.state.messageVisible)">
+                    <template #icon>
+                        <close-outlined/>
+                    </template>
+                </a-button>
+            </a-tooltip>
+            <el-empty v-if="data.length===0" description="暂无消息">
+
+            </el-empty>
+            <template v-else>
+                <a-list item-layout="horizontal" :data-source="data" class="messageBox">
+                    <template #renderItem="{ item }">
+                        <a-list-item>
+                            <a-list-item-meta
+                                    description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                            >
+                                <template #title>
+                                    <a href="https://www.antdv.com/">{{ item.title }}</a>
+                                </template>
+                                <template #avatar>
+                                    <user :user='item.user'>
+                                        <a-avatar src="https://joeschmoe.io/api/v1/random"/>
+                                    </user>
+                                </template>
+                            </a-list-item-meta>
+                        </a-list-item>
+                    </template>
+                </a-list>
+            </template>
         </div>
-        <a-tooltip title="关闭" id="close" style="position: fixed;top: 100px;right: 10px">
-            <a-button type="dashed" shape="circle" size="large"
-                      style="position: absolute;top: 10px;right: 10px"
-                      @click="$store.commit('changeMessageVisible',!$store.state.messageVisible)">
-                <template #icon>
-                    <close-outlined/>
-                </template>
-            </a-button>
-        </a-tooltip>
-        <el-empty v-if="data.length===0"  description="暂无消息">
-
-        </el-empty>
-        <template v-else>
-            <a-list item-layout="horizontal" :data-source="data" class="messageBox">
-                <template #renderItem="{ item }">
-                    <a-list-item>
-                        <a-list-item-meta
-                                description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-                        >
-                            <template #title>
-                                <a href="https://www.antdv.com/">{{ item.title }}</a>
-                            </template>
-                            <template #avatar>
-                            <user :user='item.user'>
-                                <a-avatar src="https://joeschmoe.io/api/v1/random"/>
-                            </user>
-                            </template>
-                        </a-list-item-meta>
-                    </a-list-item>
-                </template>
-            </a-list>
-        </template>
-    </div>
+    </transition>
 </template>
 
 <script>
@@ -80,7 +82,7 @@ export default {
 <style scoped>
 
 .whole {
-    z-index: 100 !important;
+    z-index: 110 !important;
     position: fixed;
     top: 60px;
     background: #fff;
@@ -133,6 +135,14 @@ export default {
     width: 90%;
     height: 90%;
     overflow: auto;
+}
+
+.fade-enter-active, .fade-leave-active {
+transition: opacity .3s;
+}
+
+.fade-enter-from, .fade-leave-to {
+opacity: 0;
 }
 
 

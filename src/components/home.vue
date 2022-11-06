@@ -4,12 +4,12 @@
   <shell></shell>
 
   <router-view v-slot="{ Component }">
-<!--    <transition name="slide-left">-->
-      <keep-alive>
-          <component :is="Component" :key="$route.fullPath" v-if="$route.meta.keepAlive"/>
-      </keep-alive>
-      <component :is="Component" :key="$route.fullPath" v-if="!$route.meta.keepAlive"/>
-<!--    </transition>-->
+
+    <keep-alive>
+      <component :is="Component" :key="$route.fullPath" v-if="$route.meta.keepAlive"/>
+    </keep-alive>
+    <component :is="Component" :key="$route.fullPath" v-if="!$route.meta.keepAlive"/>
+
   </router-view>
 
 </template>

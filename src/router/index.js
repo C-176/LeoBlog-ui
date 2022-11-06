@@ -16,6 +16,7 @@ const routes = [
             {path: '/home/article', component: () => import('@/components/front/articles')},
             {path: '/home/picture', component: () => import('@/components/front/pictures')},
             {path: '/home/about', component: () => import('@/components/front/about')},
+            {path: '/home/video', component: () => import('@/components/pub/video')},
             {path: '/back/info', component: () => import('@/components/back/info')},
             {path: '/back/articles', component: () => import('@/components/back/articles')},
             {path: '/back/scripts', component: () => import('@/components/back/scripts')},

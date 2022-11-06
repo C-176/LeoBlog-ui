@@ -2,7 +2,7 @@
   <a-popover >
     <template #content>
       <a-card hoverable style="width: 300px;">
-        <template #cover>
+        <template #cover >
           <img
               alt="pic"
               :src="p(user.userBgPic)"
@@ -16,7 +16,7 @@
         </template>
         <a-card-meta :title="user.userNickname" :description="user.userCertification">
           <template #avatar>
-            <a-avatar :src="p(user.userProfilePhoto)" />
+            <a-avatar :src="p(user.userProfilePhoto)"  />
           </template>
         </a-card-meta>
       </a-card>
