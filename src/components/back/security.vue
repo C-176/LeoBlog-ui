@@ -32,10 +32,12 @@
               <a-input v-model:value="phoneCaptcha" placeholder="请输入验证码"/>
             </a-form-item>
             <a-form-item>
-              <a-button style="margin-left: 10px" @click="phoneCoder" :disabled="phoneDisabled">获取验证码</a-button>
+              <a-button :disabled="phoneDisabled" shape="round" style="margin-left: 10px" @click="phoneCoder">
+                获取验证码
+              </a-button>
             </a-form-item>
             <a-form-item>
-              <a-button @click="changePhone">保存</a-button>
+              <a-button shape="round" @click="changePhone">保存</a-button>
             </a-form-item>
           </a-form>
         </a-card>
@@ -50,14 +52,15 @@
               <a-input v-model:value="emailCaptcha" placeholder="请输入验证码"/>
             </a-form-item>
             <a-form-item>
-              <a-button style="margin-left: 10px" @click="emailCoder" :disabled="emailDisabled" :loading="loading">
+              <a-button :disabled="emailDisabled" :loading="loading"
+                        shape="round" style="margin-left: 10px" @click="emailCoder">
                 获取验证码
               </a-button>
 
             </a-form-item>
             <a-form-item>
 
-              <a-button @click="changeEmail">保存</a-button>
+              <a-button shape="round" @click="changeEmail">保存</a-button>
             </a-form-item>
           </a-form>
         </a-card>
@@ -77,7 +80,7 @@
               <a-input v-model:value="passwordConfirm" placeholder="请再次输入新密码"/>
             </a-form-item>
             <a-form-item>
-              <a-button @click="changePassword">保存</a-button>
+              <a-button shape="round" @click="changePassword">保存</a-button>
             </a-form-item>
           </a-form>
         </a-card>

@@ -59,7 +59,7 @@ a:hover {
 /*引入字体*/
 @font-face {
     font-family: 'PingFang SC';  /* Project id 3270950 */
-    src: url('../fonts/PingFang Medium.ttf')
+    src: url('../fonts/PingFang Bold.ttf')
 }
 .dark {
     /* 自定义深色背景颜色 */

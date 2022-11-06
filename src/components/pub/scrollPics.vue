@@ -1,5 +1,13 @@
 <template>
-  <div class="wholeDiv" v-loading="loading">
+
+  <div class="wholeDiv">
+    <!--    <template v-if="loading">-->
+    <!--      <a-skeleton active/>-->
+    <!--      <a-skeleton active/>-->
+    <!--      <a-skeleton active/>-->
+    <!--    </template>-->
+
+    <!--    <template v-else>-->
     <!--      头部滚动图-->
     <div class="a" @mouseleave="leave">
       <transition name="fade">
@@ -12,6 +20,7 @@
               :preview-src-list="picUrl"
               hide-on-click-modal
               close-on-press-escape
+              ref="image"
           />
         </div>
       </transition>
@@ -21,7 +30,9 @@
         </div>
       </div>
     </div>
+    <!--    </template>-->
   </div>
+
 </template>
 
 <script>
@@ -39,18 +50,30 @@ export default {
       integral: null,
     }
   },
+  watch: {
+    // picUrl() {
+    //   this.$nextTick(() => {
+    //     this.mainPic = this.picUrl[0]
+    //     setTimeout(() => {
+    //       this.loading = false
+    //     }, 3000)
+    //     // this.loading = false
+    //   })
+    // }
+  },
+
   created() {
     this.randomList = this.randomNum(1, 167, 5);
     this.picUrl = this.randomList.map((item) => {
-      return this.baseURL + '/source/images/index/' + item + '.jpg'
-      // return '/src/source/images/index/' + item + '.jpg'
+      // return this.baseURL + '/source/images/index/' + item + '.jpg'
+      return '/src/source/images/index/' + item + '.jpg'
     });
-    //将picUrl中的图片存下来,返回链接数组
+    // 将picUrl中的图片存下来,返回链接数组
     // this.mainPic = ()=> import(this.picUrl[0]);
     this.mainPic = this.picUrl[0];
     // 开始循环
     this.scroll();
-    this.loading = false;
+
   },
   methods: {
     //随机产生不重复的5个数
