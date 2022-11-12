@@ -1,6 +1,6 @@
 <template>
 
-  <div class="wholeDiv">
+  <div class="whole">
     <!--    <template v-if="loading">-->
     <!--      <a-skeleton active/>-->
     <!--      <a-skeleton active/>-->
@@ -11,11 +11,12 @@
     <!--      头部滚动图-->
     <div class="a" @mouseleave="leave">
       <transition name="fade">
-        <div v-if="show">
+        <div v-if="show" style="width: 80%;z-index: 1">
           <el-image
               class="b"
               :src="mainPic"
               :initial-index="index"
+              style="z-index: 1"
               fit="cover"
               :preview-src-list="picUrl"
               hide-on-click-modal
@@ -40,6 +41,7 @@ export default {
   name: 'scrollPics',
   data() {
     return {
+      hz: 10000,
       show: true,
       loading: true,
       index: 0,
@@ -66,7 +68,7 @@ export default {
     this.randomList = this.randomNum(1, 167, 5);
     this.picUrl = this.randomList.map((item) => {
       // return this.baseURL + '/source/images/index/' + item + '.jpg'
-      return '/src/source/images/index/' + item + '.jpg'
+      return '/source/images/zip/' + item + '.jpg'
     });
     // 将picUrl中的图片存下来,返回链接数组
     // this.mainPic = ()=> import(this.picUrl[0]);
@@ -115,7 +117,7 @@ export default {
             break;
           }
         }
-      }, 4000)
+      }, this.hz)
 
     },
     over(index) {
@@ -157,17 +159,15 @@ export default {
   opacity: 0;
 }
 
-.wholeDiv {
+.whole {
   background: #fff;
-  /*  background: transparent;*/
-  float: left;
   width: 65%;
   margin-left: 60px;
   border-radius: 5px;
   margin-top: 60px;
 }
 
-.wholeDiv > div {
+.whole > div {
   width: 100%;
 }
 

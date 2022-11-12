@@ -6,25 +6,26 @@ import store from '@/store';
 import Swal from "sweetalert2";
 import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css'
-// import APlayer from '@moefe/vue-aplayer';
 import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
-import '@/static/css/daemon.css'
-import '@/static/css/loading.css'
+import '/public/static/css/daemon.css'
+import '/public/static/css/loading.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import bread from "@/components/pub/bread";
+
+
 // 第一步导入默认图片
-import IMG_SRC from '@/source/images/index/1.jpg'
+import IMG_SRC from '/source/images/index/1.jpg'
 
 //全局注册一个a函数
 const app = createApp(App)
 //1.开发 2.生产
-let env = 1
+let env = 2
 let host = ''
 if (env === 1) {
+    host = 'localhost'
     app.config.globalProperties.baseURL = 'http://localhost:8080'
     axios.defaults.baseURL = 'http://localhost:8080'
-    host = 'localhost'
 } else if (env === 2) {
     host = '49.235.100.240'
     app.config.globalProperties.baseURL = 'http://' + host + '/api'
@@ -97,6 +98,7 @@ app.config.globalProperties.$imgOnerror = e => {
 }
 
 app.use(router).use(store).use(ElementPlus).use(Antd).component('bread', bread)
+
 // app.use(APlayer, {
 //     defaultCover: '',
 //     productionTip: true,

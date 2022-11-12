@@ -1,6 +1,6 @@
 <template>
   <bread>文章</bread>
-  <div class="whole">
+  <div class="whole" style="margin-top: 60px">
     <template v-if="loading">
       <a-skeleton active/>
       <a-skeleton active/>
@@ -22,10 +22,19 @@
       </div>
       <div class="author">
         <user :user="article.user">
-          <img class="left" :src="p(article.user.userProfilePhoto)"/>
+          <!--          <img class="left" :src="p(article.user.userProfilePhoto)"/>-->
+          <a-avatar
+              :src="p(article.user.userProfilePhoto)"
+              :style="{ backgroundColor: '#067061'  ,verticalAlign: 'middle'}"
+              class="left"
+              shape="circle"
+              size="middle"
+          >
+            {{ article.user.userNickname }}
+          </a-avatar>
         </user>
         <div class="right">
-          <div class="name">{{ article.user.userName }}</div>
+          <div class="name">{{ article.user.userNickname }}</div>
           <div class="detail">{{ article.user.userCertification }}</div>
         </div>
       </div>
@@ -36,35 +45,35 @@
       <div class="updateTime"><span class="iconfont">&#xe6fb;</span>最后更新时间: {{ article.articleUpdateDate }}
       </div>
       <a-divider style="height: 1px"/>
-      <el-affix position="bottom" target=".content" :offset="10">
+      <!--      <el-affix position="bottom" target=".content" :offset="10">-->
 
-        <template v-if="article.isArticle === 1">
-          <div class="toolbar">
-            <a class="like" @click="like(article.articleId)">点赞<span
-                class="iconfont">&#xe605;</span>{{ article.articleLikes }} </a>
-            <a class="reply" @click="comment()">评论<span
-                class="iconfont">&#xe646;</span>{{ article.articleComments }} </a>
-            <a class="collect" @click="collect(article.articleId)">收藏<span
-                class="iconfont">&#xe8b9;</span>{{ article.articleCollects }} </a>
-            <a class="share" @click="share(article.articleId)">分享<span class="iconfont">&#xe73a;</span>
-            </a>
-          </div>
-        </template>
-      </el-affix>
-        <transition name="fade">
-          <div v-if="showComment">
-            <textarea v-model="commentIn" class="commentIn" placeholder="请输入内容"
+      <template v-if="article.isArticle === 1">
+        <div class="toolbar">
+          <a class="like" @click="like(article.articleId)">点赞<span
+              class="iconfont">&#xe605;</span>{{ article.articleLikes }} </a>
+          <a class="reply" @click="comment()">评论<span
+              class="iconfont">&#xe646;</span>{{ article.articleComments }} </a>
+          <a class="collect" @click="collect(article.articleId)">收藏<span
+              class="iconfont">&#xe8b9;</span>{{ article.articleCollects }} </a>
+          <a class="share" @click="share(article.articleId)">分享<span class="iconfont">&#xe73a;</span>
+          </a>
+        </div>
+      </template>
+      <!--      </el-affix>-->
+      <transition name="fade">
+        <div v-if="showComment">
+            <textarea v-model="commentIn" class="commentIn" placeholder="请输入内容... | Enter键发送"
                       @keyup.enter="saveComment(-1)">
             </textarea>
-            <a-button id="enter" type="primary" size="small" shape="round" ghost
-                      @click="saveComment(-1,article.user.userId)">
-              <template #icon>
-                <enter-outlined/>
-              </template>
-            </a-button>
-          </div>
+          <a-button id="enter" ghost shape="round" size="small" type="primary"
+                    @click="saveComment(-1,article.user.userId)">
+            <!--              <template #icon>-->
+            <!--                <enter-outlined/>发送-->
+            <!--              </template>-->
+          </a-button>
+        </div>
 
-        </transition>
+      </transition>
 
 
     </template>
@@ -72,7 +81,9 @@
   </div>
 
   <comment-template v-if="article.isArticle === 1"
-                    :comments="comments" :method="getComments"></comment-template>
+                    :comments="comments" :method="getComments">
+
+  </comment-template>
 
   <a-back-top/>
 
@@ -221,9 +232,7 @@ export default {
       })
     },
     comment() {
-      console.log(this.showComment)
       this.showComment = !this.showComment
-      console.log(this.showComment)
       if (!this.showComment) {
         this.commentIn = ""
         //清除行内样式
@@ -318,7 +327,7 @@ export default {
   color: #7c929c;
   border-color: #7c929c;
   position: absolute;
-  margin-left: -60px;
+  margin-left: -100px;
   margin-top: calc(4%);
 }
 
@@ -389,7 +398,7 @@ export default {
   margin-left: calc(17.5%);
   border-radius: 5px;
   padding: 10px;
-  margin-top: 60px;
+  /*margin-top: 60px;*/
 
 }
 
@@ -460,4 +469,10 @@ export default {
   margin-bottom: 10px;
 }
 
+:deep(video) {
+  width: 60%;
+  margin-left: 20%;
+  /*height: 100%;*/
+  border-radius: 10px;
+}
 </style>

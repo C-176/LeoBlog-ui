@@ -13,7 +13,11 @@
         <template v-if="login">
           <h3>验证码</h3>
           <input v-model="captcha" name="captcha" placeholder="" type="text" autocomplete="off">
-          <img :src="captchaUrl" id="codeImg" :style="{marginTop: 10+'px'}" alt="" @click="refreshCaptCha">
+          <a-tooltip>
+            <template #title>刷新验证码</template>
+            <a>
+              <img id="codeImg" :src="captchaUrl" :style="{marginTop: 10+'px'}" alt="" @click="refreshCaptCha"></a>
+          </a-tooltip>
         </template>
         <template v-else>
           <h3>确认密码</h3>
@@ -23,9 +27,9 @@
         <div v-if="login" id="login">
           <input v-model="rememberMe" name="rememberMe" type="checkbox">
           <span>记住密码</span>
-          <div @click="changePwd" class="changePwd">修改密码</div>
+          <a class="changePwd" @click="changePwd">忘记密码</a>
         </div>
-        <button @click="LR" class="login1" >{{ login ? "登陆" : "注册" }}</button>
+        <button class="login1" @click="LR">{{ login ? "登陆" : "注册" }}</button>
 
 
       </form>
@@ -38,6 +42,7 @@
 <script>
 import Swal from 'sweetalert2'
 import axios from "axios";
+import {decode, encode} from '@/util/AES'
 
 
 export default {
@@ -46,9 +51,9 @@ export default {
   data() {
     return {
       message: 'test',
-      userName: 'a',
+      userName: '',
       name: 'userName',
-      userPassword: '111',
+      userPassword: '',
       captcha: '',
       rememberMe: true,
       captchaUrl: this.baseURL + "/user/getCaptcha",
@@ -59,10 +64,30 @@ export default {
 
     }
   },
+  created() {
+    //记住密码  恢复密码
+    let uname = localStorage.getItem(encode('userName'))
+    let upwd = localStorage.getItem(encode('userPassword'))
+    if (uname && upwd) {
+      this.userName = decode(uname)
+      this.userPassword = decode(upwd)
+      this.rememberMe = true
+    }
+
+  },
   computed: {
     login() {
       return this.$store.state.login;
     }
+  },
+  watch: {
+    login(val, oldVal) {
+      if (val == false) {
+        this.userName = ''
+        this.userPassword = ''
+      }
+    }
+
   },
   methods: {
 
@@ -73,12 +98,15 @@ export default {
             userName: this.userName,
             userPassword: this.userPassword,
             captcha: this.captcha,
-            // rememberMe:this.rememberMe
           }).then(res => {
             if (res.data.code === 200) {
+              if (this.rememberMe) {
+                // 向localStorage中存储Md5加密后的用户名和密码
+                localStorage.setItem(encode('userName'), encode(this.userName))
+                localStorage.setItem(encode('userPassword'), encode(this.userPassword))
+              }
               this.$st("登陆成功", "success")
               let map = res.data.data
-              // console.log(map)
               let token = map.token
               let user = map.user
 
@@ -95,7 +123,7 @@ export default {
             }
           })
         } else {
-          console.log(this.userPassword, this.reUserPassword)
+          // console.log(this.userPassword, this.reUserPassword)
           //密码不能为空
           if (this.userPassword.trim() === '' || this.reUserPassword.trim() === '') {
             this.$sa("密码不能为空", 'error')
@@ -113,19 +141,20 @@ export default {
           }
           this.$axios.get("/user/confirm/email/" + this.userEmail);
           Swal.fire({
-            clickConfirm: false,
+            showConfirmButton: false,
+            allowOutsideClick: false,
             title: '正在向 ' + this.userEmail + ' 发送验证邮件',
             // html: '将在 <strong></strong> 毫秒内发送完成',
             timer: 3000,
           }).then((result) => {
             if (result.dismiss === Swal.DismissReason.timer) {
               Swal.fire({
+                allowOutsideClick: false,
                 title: "验证邮件已发送，请输入验证码",
                 input: 'text',
                 inputAttributes: {
                   autocapitalize: 'off'
                 },
-                clickConfirm: false,
                 confirmButtonText: '注册',
                 showCancelButton: true,
                 cancelButtonText: '取消',
@@ -159,11 +188,11 @@ export default {
     },
 
     refreshCaptCha() {
-      console.log(localStorage.getItem("token"));
+      // console.log(localStorage.getItem("token"));
       this.captchaUrl = this.baseURL + "/user/getCaptcha?time=" + new Date().getTime() + '&token=' + localStorage.getItem("token")
     },
     changePwd() {
-      alert("修改密码")
+      this.$sa("请联系管理员修改密码\n微信: RTX1999", "warning")
     },
 
 
@@ -215,13 +244,14 @@ export default {
 
 #login .changePwd:hover {
   background-color: #7c929c;
+  color: #fff !important;
   transition: background-color 0.2s;
 }
 
 #login .changePwd {
   /* padding-top: 10px; */
   float: right;
-  width: 110px;
+  width: 80px;
   height: 40px;
   /*margin-left: 210px;*/
   line-height: 40px;

@@ -1,5 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import store from '@/store'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 
 
 const routes = [
@@ -15,8 +17,9 @@ const routes = [
             {path: '/home/index', name: 'index', component: () => import('@/components/front/index_main')},
             {path: '/home/article', component: () => import('@/components/front/articles')},
             {path: '/home/picture', component: () => import('@/components/front/pictures')},
-            {path: '/home/about', component: () => import('@/components/front/about')},
-            {path: '/home/video', component: () => import('@/components/pub/video')},
+            {path: '/home/about/bigs', component: () => import('@/components/front/about')},
+            {path: '/home/about/team', component: () => import('@/components/front/team')},
+            {path: '/home/video/:add', component: () => import('@/components/pub/video')},
             {path: '/back/info', component: () => import('@/components/back/info')},
             {path: '/back/articles', component: () => import('@/components/back/articles')},
             {path: '/back/scripts', component: () => import('@/components/back/scripts')},
@@ -54,7 +57,7 @@ const router = createRouter({
 })
 router.beforeEach((to, from, next) => {
     //将页面设置为缓存
-
+    NProgress.start()
     to.meta.keepAlive = !to.path.includes('/search');
     to.meta.transition = 'fade'
     if (to.path == '/index') {
@@ -62,10 +65,13 @@ router.beforeEach((to, from, next) => {
         return
     }
     if (to.path.includes('/LR')) {
+        store.commit('changeLogin', true)
+        store.commit('changeIndex', false)
         next()
     } else {
         let token = localStorage.getItem("token")
-        if (token == null || token.trim() == '' || token == undefined) {
+        let user = store.state.user
+        if (token == null || token.trim() == '' || token == undefined || user == null || user == undefined) {
             next('/LR')
         } else {
             next()
@@ -77,5 +83,8 @@ router.beforeEach((to, from, next) => {
         store.commit('changeShell', false)
     }
 },)
+router.afterEach(() => {
+    NProgress.done()
+})
 
 export default router

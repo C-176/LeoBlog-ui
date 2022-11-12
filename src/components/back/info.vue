@@ -21,7 +21,7 @@
               :on-error="handleAvatarError"
               :disabled="readonly"
           >
-            <img id="bg" v-if="p(userx.userBgPic) && readonly" :src="p(userx.userBgPic)" class="avatar"/>
+            <img v-if="p(userx.userBgPic) && showBg" id="bg" :src="p(userx.userBgPic)" class="avatar"/>
             <el-icon v-else class="avatar-uploader-icon bgUpload">
               <Plus/>
             </el-icon>
@@ -40,7 +40,15 @@
               :disabled="readonly"
 
           >
-            <img v-if="imageUrl && readonly" :src="p(imageUrl) " class="avatar" style="height: 150px;width: 150px;"/>
+            <!--/*            <img  :src="p(userx.userProfilePhoto) " class="avatar" style="height: 150px;width: 150px;"/>*/-->
+            <a-avatar
+                v-if="userx.userProfilePhoto && showProfile"
+                :src="p(userx.userProfilePhoto)"
+                :style="{ backgroundColor: '#067061'  ,verticalAlign: 'middle',height: '150px',width: '150px'}"
+                shape="square"
+            >
+              {{ userx.userNickname }}
+            </a-avatar>
             <el-icon v-else class="avatar-uploader-icon profileUpload">
               <Plus/>
             </el-icon>
@@ -146,9 +154,11 @@ export default {
   },
   data() {
     return {
+      showBg: true,
+      showProfile: true,
       loading: true,
       action: this.baseURL + "/upload/file",
-      imageUrl: '',
+      // imageUrl: '',
       mode: '修改',
       readonly: true,
       size: 'small',
@@ -193,10 +203,13 @@ export default {
             this.userx.userEducation === this.$store.state.user.userEducation &&
             this.userx.userCertification === this.$store.state.user.userCertification &&
             this.userx.userIntroduction === this.$store.state.user.userIntroduction &&
-            this.userx.userProfilePhoto === this.$store.state.user.userProfilePhoto) {
+            this.userx.userProfilePhoto === this.$store.state.user.userProfilePhoto &&
+            this.userx.userBgPic === this.$store.state.user.userBgPic) {
           this.$st('您未做任何修改', 'warning');
           this.mode = '修改';
           this.readonly = true;
+          this.showBg = true;
+          this.showProfile = true;
         } else {
           //修改用户信息
           this.$axios.put('/user/update', this.userx).then(res => {
@@ -205,6 +218,8 @@ export default {
               this.$store.commit('setUser', this.userx)
               this.mode = '修改';
               this.readonly = true;
+              this.showBg = true;
+              this.showProfile = true;
             } else {
               this.$st('修改失败', 'error');
             }
@@ -213,16 +228,19 @@ export default {
       } else {
         this.mode = '保存';
         this.readonly = false;
+        this.showBg = false;
+        this.showProfile = false;
         this.$st('可以修改了', 'success');
       }
 
     },
     handleAvatarSuccessProfile(res, file) {
-      this.imageUrl = res.data.url;
       this.userx.userProfilePhoto = res.data.url;
+      this.showProfile = true
     },
     handleAvatarSuccessBg(res, file) {
       this.userx.userBgPic = res.data.url;
+      this.showBg = true
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg' || 'image/png' || 'image/gif' || 'image/bmp' || 'image/webp';

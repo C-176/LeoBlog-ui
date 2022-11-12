@@ -1,23 +1,42 @@
 <!DOCTYPE html>
-<html lang="zh" >
-  <head>
+<html lang="zh">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<!--    <link rel="icon" href="<%= BASE_URL %>favicon.ico">-->
-      <link rel="icon" href="/favicon.ico">
-      <script type="module" src="/src/main.js"></script>
+    <!--    <link rel="icon" href="<%= BASE_URL %>favicon.ico">-->
+    <link href="/favicon.ico" rel="icon">
+    <script src="/src/main.js" type="module"></script>
     <title>LeoBlog 用文字连接世界</title>
-      <style>
-          [v-cloak] {
-              display: none !important;
-          }
-          #app{
-              overflow: hidden;
-          }
-      </style>
-  </head>
-  <body>
-    <div id="app" v-cloak></div>
-  </body>
+    <style>
+        [v-cloak] {
+            display: none !important;
+        }
+
+        #app {
+            overflow: hidden;
+            width: 100vw;
+
+        }
+
+        html {
+            overflow: hidden;
+            /*width: 100vw;*/
+        }
+
+        body {
+            width: 100vw;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        /* 修改进度条颜色 全局css文件中添加，也可以独立出一个css文件，在页面处单独引入*/
+        #nprogress .bar {
+            background: #21a574 !important;
+        }
+    </style>
+</head>
+<body>
+<div v-cloak id="app"></div>
+</body>
 </html>

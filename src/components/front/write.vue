@@ -1,5 +1,6 @@
 <template>
   <h></h>
+  <bread>创作</bread>
   <div class="whole">
     <editor :articleId="$route.params.articleId"></editor>
     <div class="labels">
@@ -44,10 +45,10 @@
 
       <div class="tools">
         <div class="left">
-          <div class="publish" @click="saveAsArticle">
+          <div class="publish" @click.once="saveAsArticle">
             <span>发布文章</span>
           </div>
-          <div class="save" @click="saveAsScript">
+          <div class="save" @click.once="saveAsScript">
             <span>保存草稿</span>
           </div>
         </div>
@@ -188,17 +189,20 @@ export default {
     save(isArticle) {
       this.article.articleContent = this.$store.state.valueContent;
       this.article.articleTitle = this.$store.state.valueTitle;
-      //内容和标题不可为空
-      if (this.article.articleTitle.trim() == '' || this.article.articleContent.trim() == ''
-          ||this.article.articleTitle.trim() == '<p><br></p>' ||this.article.articleContent.trim() == '<p><br></p>') {
-        this.$st("标题和内容不可为空", 'error')
-        return;
-      }
+      this.$nextTick(() => {
+        //内容和标题不可为空
+        if (this.article.articleTitle.trim() == '' || this.article.articleContent.trim() == ''
+            || this.article.articleTitle.trim() == '<p><br></p>' || this.article.articleContent.trim() == '<p><br></p>') {
+          this.$st("标题和内容不可为空", 'error')
+          return;
+        }
+      })
+
       this.article.articleUpdateDate = new Date();
       this.article.isArticle = isArticle;
       this.article.labels = this.article.labels.filter(item => item.labelId != -1)
-      if(this.article.articlePic==null){
-        this.article.articlePic='';
+      if (this.article.articlePic == null) {
+        this.article.articlePic = '';
       }
 
       this.$axios.put(this.baseURL + "/article/update", this.article).then(res => {
@@ -267,6 +271,7 @@ export default {
   text-align: left;
   background-color: #fff;
   padding: 10px;
+  padding-top: 70px;
 }
 
 .labels {

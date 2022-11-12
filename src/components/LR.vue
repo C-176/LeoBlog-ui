@@ -67,7 +67,6 @@ body {
   height: 100vh;
   width: 100vw;
   /*设置背景图片*/
-  /*background-image: url(http://localhost:8080/source/images/index/1.jpg);*/
   background-repeat: no-repeat;
   background-size: 110% 110%;
 }

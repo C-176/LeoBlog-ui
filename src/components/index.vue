@@ -8,7 +8,7 @@
       <span></span>
       <span></span>
       <span></span>
-      <img alt="" src="@/source/images/iron_man.png">
+      <img alt="" src="/source/images/iron_man.png">
     </div>
     <div class="lines">
       <span></span>

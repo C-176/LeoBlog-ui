@@ -1,21 +1,20 @@
 <template>
-  <!--  加载完毕之前显示骨架屏-->
-  <!--  <el-skeleton v-if="loading" :rows="5" animated />-->
-  <scroll-pics></scroll-pics>
-  <article-show :article-list="articleList"></article-show>
-  <right-self></right-self>
-  <copy-right></copy-right>
-
+  <div ref="show" @wheel="scrollBottom">
+    <scroll-pics></scroll-pics>
+    <article-show :article-list="articleList"></article-show>
+    <right-self></right-self>
+    <copy-right></copy-right>
+  </div>
 
   <a-back-top/>
 
-<!--  <el-slider-->
-<!--      v-model="value"-->
-<!--      :max="max"-->
-<!--      :format-tooltip="formatTooltip"-->
-<!--      @input="inputSlider"-->
-<!--      style="color: #fff;height:10px;margin-bottom: 10px"-->
-<!--  />-->
+  <!--  <el-slider-->
+  <!--      v-model="value"-->
+  <!--      :max="max"-->
+  <!--      :format-tooltip="formatTooltip"-->
+  <!--      @input="inputSlider"-->
+  <!--      style="color: #fff;height:10px;margin-bottom: 10px"-->
+  <!--  />-->
 
 </template>
 
@@ -45,18 +44,29 @@ export default {
       pageSize: 20,
       max: 0,
       value: 0,
+      updateTime: new Date().getTime(),
 
 
     }
   },
-  watch: {},
 
   created() {
     this.queryArticle()
-    window.addEventListener('scroll', this.scrollBottom);
+
+  },
+  mounted() {
+    // 获取指定元素
+    const scrollview = this.$refs.show
+    // 添加滚动监听，该滚动监听了拖拽滚动条
+    // 尾部的 true 最好加上，我这边测试没加 true ，拖拽滚动条无法监听到滚动，加上则可以监听到拖拽滚动条滚动回调
+    scrollview.addEventListener('scroll', this.scrollBottom, true)
   },
   beforeRouteLeave() {
-    window.removeEventListener('scroll', this.scrollBottom)//页面离开后销毁监听事件
+
+    // 获取指定元素
+    const scrollview = this.$refs.show
+    // 移除滚动监听
+    scrollview.removeEventListener('scroll', this.scrollBottom, true)
   },
 
   methods: {
@@ -76,14 +86,16 @@ export default {
     //如果滚动条到最底下，加载更多
     scrollBottom() {
       //监听滚动条滚动事件
-
-      let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-      let clientHeight = document.documentElement.clientHeight;
-      let scrollHeight = document.documentElement.scrollHeight;
+      let scrollTop = document.body.scrollTop;
+      let clientHeight = document.body.clientHeight;
+      let scrollHeight = document.body.scrollHeight;
       this.max = scrollHeight - clientHeight
       this.value = scrollTop;
       if (scrollTop + clientHeight >= scrollHeight) {
-        this.queryArticle();
+        if (new Date().getTime() - this.updateTime > 1000 * 10) {
+          this.updateTime = new Date().getTime()
+          this.queryArticle()
+        }
       }
     }
     ,
@@ -95,47 +107,48 @@ export default {
     inputSlider(value) {
       this.value = value;
       //将滚动条滚动到指定位置
-      document.documentElement.scrollTop = value
+      // document.documentElement.scrollTop = value
     }
     ,
 
 
-  }
+  },
+  watch: {}
 
 }
 
 </script>
 
 <style scoped>
-.whole {
-  margin-top: 504px;
+/*.whole {*/
+/*  margin-top: 504px;*/
+/*}*/
+
+/*::-webkit-scrollbar {*/
+/*  display: none;*/
+/*}*/
+
+/*:deep(.el-slider__bar) {*/
+/*  background: #fff !important;*/
+/*}*/
+
+/*:deep(.el-slider) {*/
+/*  position: fixed;*/
+/*  bottom: 0px;*/
+/*  !*margin-top: 20px;*!*/
+/*}*/
+
+:deep(.whole) {
+  margin-left: 60px !important;
 }
 
-::-webkit-scrollbar {
-  display: none;
-}
+/*::-webkit-scrollbar {*/
+/*  width: 0 !important;*/
+/*}*/
 
-:deep(.el-slider__bar) {
-  background: #fff !important;
-}
-
-:deep(.el-slider) {
-  position: fixed;
-  bottom: 0px;
-  /*margin-top: 20px;*/
-}
-
-.whole {
-  margin-left: 60px;
-}
-
-::-webkit-scrollbar {
-  width: 0 !important;
-}
-
-::-webkit-scrollbar {
-  width: 0 !important;
-  height: 0;
-}
+/*::-webkit-scrollbar {*/
+/*  width: 0 !important;*/
+/*  height: 0;*/
+/*}*/
 
 </style>

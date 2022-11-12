@@ -1,12 +1,18 @@
 <template>
 
-  <div class="editor" style="border-width: 0">
-    <Toolbar
-        style="border-bottom: 1px solid #ccc;"
-        :editor="editor"
-        :defaultConfig="toolbarConfig"
-        :mode="mode"
-    />
+  <div ref="containerRef" class="editor">
+    <el-affix offset="60" position="top" style="position: absolute;width: 65%;top: 50px;z-index: 10;margin-left:-10px">
+      <!--          <a-affix offset-top="10" :target="this.$refs.containerRef" :style="{ }">-->
+      <div>
+        <Toolbar
+            :defaultConfig="toolbarConfig"
+            :editor="editor"
+            :mode="mode"
+            style="border-bottom: 1px solid #ccc;"
+        />
+      </div>
+      <!--            </a-affix>-->
+    </el-affix>
     <Editor
         style=" overflow-y: hidden; font-size: 18px; border-bottom: 1px solid #ccc;outline: none"
         v-model="valueTitle"
@@ -33,7 +39,9 @@ import '@wangeditor/editor/dist/css/style.css' // 引入 css
 import {Editor, Toolbar} from '@wangeditor/editor-for-vue'
 import {Boot} from '@wangeditor/editor'
 import markdownModule from '@wangeditor/plugin-md'
+import Swal from "sweetalert2";
 
+Boot.registerModule(markdownModule)
 export default {
   name: 'editor',
   components: {Editor, Toolbar, Boot},
@@ -62,20 +70,22 @@ export default {
         autoFocus: false,
         MENU_CONF: {
           uploadImage: {
+            baseURL: '',
             // 上传图片的配置
             server: "http:localhost:8080/upload/file", // 上传图片的服务器地址
             fieldName: 'file', // 上传图片的字段名
 
             // 单个文件的最大体积限制，默认为 2M
-            maxFileSize: 2 * 1024 * 1024, // 1M
+            maxFileSize: 3 * 1024 * 1024, // 1M
+
 
             // 选择文件时的类型限制，默认为 ['image/*'] 。如不想限制，则设置为 []
-            allowedFileTypes: ['image/*'],
+            allowedFileTypes: [],
 
             // 自定义上传参数，例如传递验证的 token 等。参数会被添加到 formData 中，一起上传到服务端。
-            meta: {
-              token: localStorage.getItem('token'),
-            },
+            // meta: {
+            //   token: localStorage.getItem('token'),
+            // },
 
             // 将 meta 拼接到 url 参数中，默认 false
             metaWithUrl: false,
@@ -93,11 +103,55 @@ export default {
             },
             // 上传错误，或者触发 timeout 超时
             onError(file, err, res) {
+              if (err.message.includes('MB')) {
+                Swal.fire({
+                  icon: 'warning',
+                  text: '图片大小不能超过3MB',
+                })
+              }
               console.log(`${file.name} 上传出错`, err, res)
             },
             // 小于该值就插入 base64 格式（而不上传），默认为 0
             base64LimitSize: 0.5 * 1024 * 1024 // 0.5M
           },
+          uploadVideo: {
+            server: "http:localhost:8080/upload/file", // 上传图片的服务器地址
+            fieldName: 'file', // 上传图片的字段名
+            // 自定义上传参数，例如传递验证的 token 等。参数会被添加到 formData 中，一起上传到服务端。
+            meta: {
+              token: localStorage.getItem('token'),
+            },
+            // 自定义增加 http  header
+            headers: {
+              Authorization: localStorage.getItem('token')
+            },
+            // // 跨域是否传递 cookie ，默认为 false
+            // withCredentials: true,
+            // 单个文件的最大体积限制，默认为 10M
+            maxFileSize: 10 * 1024 * 1024, // 10M
+
+            // 超时时间，默认为 30 秒
+            timeout: 30 * 1000, // 15 秒
+            // 单个文件上传失败
+            onFailed(file, res) {
+              console.log(`${file.name} 上传失败`, res)
+            },
+            onSuccess(file, res) {
+              console.log(`${file.name} 上传成功`, res)
+            },
+            // 上传错误，或者触发 timeout 超时
+            onError(file, err, res) {
+              if (err.message.includes('MB')) {
+                Swal.fire({
+                  icon: 'warning',
+                  text: '视频大小不能超过10MB',
+                })
+              }
+              console.log(`${file.name} 上传出错`, err, res)
+
+            },
+          },
+
           codeSelectLang: {
             // 代码语言
             codeLangs: [
@@ -131,6 +185,8 @@ export default {
 
   created() {
     this.editorConfig1.MENU_CONF.uploadImage.server = this.baseURL + '/upload/file'
+    this.editorConfig1.MENU_CONF.uploadImage.baseURL = this.baseURL
+    this.editorConfig1.MENU_CONF.uploadVideo.server = this.baseURL + '/upload/file'
 
     // 切换语言 - 'en' 或者 'zh-CN'
     // i18nChangeLanguage('en')
@@ -158,7 +214,7 @@ export default {
   },
   methods: {
     handleCreated(editor) {
-      Boot.registerModule(markdownModule)
+
       this.editor = Object.seal(editor)
     },
     changeTitle() {
@@ -176,7 +232,7 @@ export default {
         if (this.save) {
           this.changeContent();
           this.changeTitle();
-        }else{
+        } else {
           clearInterval();
         }
       }, 10000)
@@ -192,5 +248,6 @@ export default {
 </script>
 
 <style scoped>
+
 
 </style>

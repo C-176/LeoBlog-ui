@@ -14,13 +14,13 @@ export default {
       audio: [{
         name: 'Brooklyn',
         artist: 'The Midnight',
-        url: '/src/source/audios/Brooklyn - The Midnight.mp3',
+        url: '/source/audios/Brooklyn - The Midnight.mp3',
         cover: 'http://p1.music.126.net/X0ZUXOrUi2H42Hsr5Bi5MA==/109951165111559735.jpg?param=130y130',
         // theme: '#ebd0c2'
-      },{
+      }, {
         name: 'Lost Boy',
         artist: 'The Midnight',
-        url: '/src/source/audios/Lost Boy - The Midnight.mp3',
+        url: '/source/audios/Lost Boy - The Midnight.mp3',
         cover: 'http://p1.music.126.net/X0ZUXOrUi2H42Hsr5Bi5MA==/109951165111559735.jpg?param=130y130',
         // theme: '#ebd0c2'
       }]

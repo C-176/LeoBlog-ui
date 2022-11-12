@@ -13,7 +13,7 @@
         <template #description>
           <span>暂无草稿</span>
         </template>
-        <el-button @click="$router.push('/write/0')">点击进行创作</el-button>
+        <a-button shape="round" @click="$router.push('/write/0')">点击进行创作</a-button>
       </el-empty>
       <!--      文章展示-->
       <div class="Article" v-for="(article,index) in myScripts" :key="article.articleId">
@@ -194,11 +194,7 @@ export default {
 </script>
 
 <style scoped>
-:deep(.el-button--primary) {
-  /*background-color: #fff;*/
-  /*border-color: #409eff;*/
-  color: #fff;
-}
+
 
 :deep(.el-pagination) {
   width: 100%;

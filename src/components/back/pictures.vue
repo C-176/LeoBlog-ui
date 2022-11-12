@@ -18,7 +18,8 @@ export default {
   created() {
     let randomList = this.randomNum(1, 167, 20);
     this.pics = randomList.map((item) => {
-      return this.baseURL + '/source/images/index/' + item + '.jpg'
+      // return this.baseURL + '/source/images/index/' + item + '.jpg'
+      return '/source/images/zip/' + item + '.jpg'
     });
     this.$nextTick(() => {
       window.addEventListener('scroll', this.scrollBottom);

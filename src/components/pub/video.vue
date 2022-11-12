@@ -1,5 +1,5 @@
 <template>
-  <bread>upfox茶杯狐（外链）</bread>
+  <bread>视频外链</bread>
   <!--  <template v-if="loading">-->
   <!--    <a-skeleton active/>-->
   <!--    <a-skeleton active/>-->
@@ -8,7 +8,7 @@
 
   <!--  <template v-else>-->
   <div v-loading="loading" style="margin-top: 49px;">
-    <iframe src='https://cupfox.app/' style="width:100vw; height: calc(100vh - 55px)"></iframe>
+    <iframe :src="'https://'+add.replaceAll('*','/')" style="width:100vw; height: calc(100vh - 55px)"></iframe>
     <!--  </template>--></div>
 </template>
 
@@ -17,13 +17,13 @@ export default {
   name: "video",
   data() {
     return {
-      loading: true
+      loading: true,
+      add: '',
+
     };
   },
-  mounted() {
-    // setTimeout(() => {
-    //   this.loading = false
-    // }, 1000)
+  beforeMount() {
+    this.add = this.$route.params.add
     this.loading = false
   }
 }

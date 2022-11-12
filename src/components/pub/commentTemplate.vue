@@ -7,11 +7,16 @@
     </template>
 
     <template v-else>
-      <el-empty v-if="comments.length===0" description="暂无评论，快发表你的评论吧"/>
+      <el-empty v-if="comments.length===0">
+        <template #description>
+          暂无评论，快去发表你的评论吧
+        </template>
+      </el-empty>
       <a-list v-else :data-source="comments" item-layout="vertical" size="small">
         <template #renderItem="{item}">
           <template v-if="item.articleTitle.trim() != ''">
-              <a style="font-size: 16px;margin:10px 0 ; display: block" @click="$router.push('/article/'+item.articleId)"><span v-html="item.articleTitle"></span></a>
+            <a style="font-size: 16px;margin:10px 0 ; display: block" @click="$router.push('/article/'+item.articleId)"><span
+                v-html="item.articleTitle"></span></a>
           </template>
           <a-list-item :key="item.commentId" :extra="item.commentUpdateTime">
             <template #actions>
@@ -33,7 +38,11 @@
 
               <template #avatar>
                 <user :user="item.user">
-                  <a-avatar :src="p(item.user.userProfilePhoto)"/>
+                  <a-avatar :src="p(item.user.userProfilePhoto)"
+                            :style="{backgroundColor:'#0eb73a'}"
+                            size="middle">
+                    {{ item.user.userNickname }}
+                  </a-avatar>
                 </user>
               </template>
             </a-list-item-meta>
@@ -59,7 +68,11 @@
               <a-list-item-meta :description="i.commentContent" :title="i.user.userNickname">
                 <template #avatar>
                   <user :user="i.user">
-                    <a-avatar :src="p(i.user.userProfilePhoto)"/>
+                    <a-avatar :src="p(i.user.userProfilePhoto)"
+                              :style="{backgroundColor:'#067061'}"
+                              size="middle">
+                      {{ i.user.userNickname }}
+                    </a-avatar>
                   </user>
                 </template>
               </a-list-item-meta>
@@ -77,9 +90,10 @@
           </textarea>
           <a-button id="enter" :loading="submitting" ghost shape="round" size="small"
                     type="primary" @click="saveComment()">
-            <template #icon>
-              <enter-outlined/>
-            </template>
+            <!--            <template #icon>-->
+            <enter-outlined/>
+            发送
+            <!--            </template>-->
           </a-button>
 
         </el-affix>
@@ -197,7 +211,7 @@ export default {
   color: #7c929c;
   border-color: #7c929c;
   position: absolute;
-  margin-left: -60px;
+  margin-left: -100px;
   margin-top: calc(7%);
 }
 
@@ -236,7 +250,7 @@ span:hover {
   margin-left: calc(17.5%);
   text-align: left;
   background-color: #fff;
-  margin-top: 60px;
+  /*margin-top: 60px;*/
 
   margin-bottom: 10px;
 }

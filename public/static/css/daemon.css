@@ -1,9 +1,9 @@
 /* CDN 服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */
 @font-face {
     font-family: 'iconfont';  /* Project id 3270950 */
-    src: url('//at.alicdn.com/t/c/font_3270950_qiuxkzx3lq9.woff2?t=1667377721433') format('woff2'),
-    url('//at.alicdn.com/t/c/font_3270950_qiuxkzx3lq9.woff?t=1667377721433') format('woff'),
-    url('//at.alicdn.com/t/c/font_3270950_qiuxkzx3lq9.ttf?t=1667377721433') format('truetype');
+    src: url('//at.alicdn.com/t/c/font_3270950_q21sl35q5at.woff2?t=1667797852199') format('woff2'),
+    url('//at.alicdn.com/t/c/font_3270950_q21sl35q5at.woff?t=1667797852199') format('woff'),
+    url('//at.alicdn.com/t/c/font_3270950_q21sl35q5at.ttf?t=1667797852199') format('truetype');
 }
 .iconfont {
     font-family: "iconfont" !important;
@@ -59,7 +59,7 @@ a:hover {
 /*引入字体*/
 @font-face {
     font-family: 'PingFang SC';  /* Project id 3270950 */
-    src: url('../fonts/PingFang Bold.ttf')
+    src: url('/static/fonts/PingFang Bold.ttf')
 }
 .dark {
     /* 自定义深色背景颜色 */
@@ -95,31 +95,31 @@ body {
 }
 
 
-/* 设置滚动条的样式 */
-::-webkit-scrollbar {
-    width: 6px !important;
-}
+/*!* 设置滚动条的样式 *!*/
+/*::-webkit-scrollbar {*/
+/*    width: 6px !important;*/
+/*}*/
 
-/* 滚动槽 */
-::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    /*border-radius: 10px;*/
-}
+/*!* 滚动槽 *!*/
+/*::-webkit-scrollbar-track {*/
+/*    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);*/
+/*    !*border-radius: 10px;*!*/
+/*}*/
 
-/* 滚动条滑块 */
-::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background: rgba(0, 0, 0, 0.1);
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
-}
+/*!* 滚动条滑块 *!*/
+/*::-webkit-scrollbar-thumb {*/
+/*    border-radius: 10px;*/
+/*    background: rgba(0, 0, 0, 0.1);*/
+/*    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);*/
+/*}*/
 
-::-webkit-scrollbar-thumb:window-inactive {
-    background: rgba(0, 0, 0, 0.5);
-}
+/*::-webkit-scrollbar-thumb:window-inactive {*/
+/*    background: rgba(0, 0, 0, 0.5);*/
+/*}*/
 
-* i {
-    font-style: normal;
-}
+/** i {*/
+/*    font-style: normal;*/
+/*}*/
 /*::selection{*/
 /*    background:#869d9d;*/
 /*    color:#134857;*/

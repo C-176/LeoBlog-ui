@@ -1,6 +1,6 @@
 <template>
 
-  <div class="whole">
+  <div ref="tar" class="whole">
     <template v-if="loading">
       <a-skeleton active/>
       <a-skeleton active/>
@@ -10,12 +10,15 @@
     <template v-else>
 
       <el-empty v-if="articleList.length===0">
-        <el-button @click="$router.push('/write/0')">点击进行创作</el-button>
+        <template #description>
+          <span>暂无文章</span>
+        </template>
+        <a-button shape="round" @click="$router.push('/write/0')">点击进行创作</a-button>
       </el-empty>
       <!--      文章展示-->
       <div class="Article" v-for="(article,index) in myArticles" :key="article.articleId">
 
-        <div v-if="article.articlePic!=''" class="img">
+        <div v-if="article.articlePic==null || article.articlePic!=''" class="img">
           <el-image
               style="height: 100%"
               :src="p(article.articlePic)"
@@ -27,7 +30,7 @@
         </div>
 
         <div class="right"
-             :class="{isFull:article.articlePic==null}">
+             :class="{isFull:article.articlePic==null || article.articlePic==''}">
           <div class="at"><a href="javascript:void(0)">
             <router-link :to="'/article/'+article.articleId"><span class="iconfont"
                                                                    v-html="'&#xe630;'+article.articleTitle"></span>
@@ -68,7 +71,6 @@
   </div>
   <a-back-top/>
 
-
 </template>
 
 <script>
@@ -81,15 +83,15 @@ export default {
     return {
       loading: true,
       articleList: [
-      //     {
-      //   articleId: 1,
-      //   userId: 1,
-      //   articleTitle: '测试标题',
-      //   articleContent: '测试内容',
-      //   articlePic: '',
-      //   author: '作者',
-      //   articleUpdateDate: '2020-05-27 15:36:05'
-      // }
+        //     {
+        //   articleId: 1,
+        //   userId: 1,
+        //   articleTitle: '测试标题',
+        //   articleContent: '测试内容',
+        //   articlePic: '',
+        //   author: '作者',
+        //   articleUpdateDate: '2020-05-27 15:36:05'
+        // }
 
       ],
       currentPage: 1,
@@ -127,9 +129,9 @@ export default {
     this.getArticles()
 
   },
-  watch:{
-    myArticles(){
-      this.$nextTick(()=>{
+  watch: {
+    myArticles() {
+      this.$nextTick(() => {
         this.loading = false
       })
     }
@@ -199,10 +201,8 @@ export default {
 </script>
 
 <style scoped>
-:deep(.el-button--primary) {
-  /*background-color: #fff;*/
-  /*border-color: #409eff;*/
-  color: #fff;
+:deep(.ant-back-top) {
+  display: block !important;
 }
 
 :deep(.el-pagination) {
@@ -325,5 +325,6 @@ export default {
 .isFull {
   width: 80%;
   margin-left: 10%;
+
 }
 </style>

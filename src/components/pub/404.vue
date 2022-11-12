@@ -1,11 +1,11 @@
 <template>
   <div class="whole">
-  <a-empty >
-    <template #description>
-      404 找不到该页面
-    </template>
-    <a-button @click="this.$router.go(-1)">点击返回上一页面</a-button>
-  </a-empty>
+    <a-empty>
+      <template #description>
+        404 找不到该页面
+      </template>
+      <a-button shape="round" @click="this.$router.go(-1)">点击返回上一页面</a-button>
+    </a-empty>
   </div>
 </template>
 

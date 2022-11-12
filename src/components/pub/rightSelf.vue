@@ -6,7 +6,16 @@
         <span class="iconfont">&#xe7c4;</span>草稿箱 ({{ scriptSize }})</a></div>
     <div class="user">
       <div class="img">
-        <img id="profilePhoto" alt="picture" :src="p(user.userProfilePhoto)">
+        <!--        <img id="profilePhoto" alt="picture" :src="p(user.userProfilePhoto)">-->
+        <a-avatar
+            id="profilePhoto"
+            :src="p(user.userProfilePhoto)"
+            :style="{ backgroundColor: '#067061'  ,verticalAlign: 'middle' }"
+            shape="square"
+            size="middle"
+        >
+          {{ user.userNickname }}
+        </a-avatar>
       </div>
       <div class="intro">
         <div class="name"><span class="iconfont">&#xe6b3;</span>

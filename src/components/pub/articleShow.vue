@@ -1,52 +1,58 @@
 <template>
   <div class="whole">
     <template v-if="$loading">
-      <a-skeleton active />
-      <a-skeleton active />
-      <a-skeleton active />
+      <a-skeleton active/>
+      <a-skeleton active/>
+      <a-skeleton active/>
     </template>
 
     <template v-else>
 
-    <el-empty v-if="articles.length===0" description="暂无结果"/>
-    <!--      文章展示-->
-    <div class="Article" v-else v-for="(article,index) in myArticles" :key="article.articleId">
-      <div v-if="article.articlePic!='' && article.articlePic!=null" class="img">
-        <el-image
-            style="height: 100%"
-            :src="p(article.articlePic)"
-            :preview-src-list="[p(article.articlePic)]"
-            hide-on-click-modal
-            close-on-press-escape
-            fit="cover"
-        />
-      </div>
+      <el-empty v-if="articles.length===0" description="暂无结果"/>
+      <!--      文章展示-->
+      <div v-for="(article,index) in myArticles" v-else :key="article.articleId" class="Article">
 
-      <div class="right"
-           :class="{isFull:article.articlePic=='' || article.articlePic==null}">
-        <div class="at"><a href="javascript:void(0)">
-          <router-link :to="'/article/'+article.articleId"><span class="iconfont">&#xe630;</span>
-            <span v-html="article.articleTitle"></span>
-          </router-link>
-        </a>
+        <div v-if="article.articlePic!='' && article.articlePic!=null" class="img">
+          <el-image
+              :preview-src-list="[p(article.articlePic)]"
+              :src="p(article.articlePic)"
+              close-on-press-escape
+              fit="cover"
+              hide-on-click-modal
+              style="height: 100%"
+          />
         </div>
 
-        <div class="author"><el-link style="color:#111" type="info" @click="$router.push('/user/'+article.userId)"><span class="iconfont">&#xe6b3;</span> {{ article.author }}</el-link></div>
-        <div class="comment"><span v-html="article.articleContent"></span></div>
+        <div :class="{isFull:article.articlePic=='' || article.articlePic==null}"
+             class="right">
+          <div class="at"><a href="javascript:void(0)">
+            <router-link :to="'/article/'+article.articleId"><span class="iconfont">&#xe630;</span>
+              <span v-html="article.articleTitle"></span>
+            </router-link>
+          </a>
+          </div>
 
-        <div class="toolbar">
-          <a class="like" @click="like(article.articleId,index)">点赞<span
-              class="iconfont">&#xe605;</span>{{ article.articleLikes }} </a>
-          <!--          <a class="reply" @click="comment(article.articleId)">评论<span-->
-          <!--              class="iconfont">&#xe646;</span>{{ article.articleComments }} </a>-->
-          <a class="collect" @click="collect(article.articleId,index)">收藏<span
-              class="iconfont">&#xe8b9;</span>{{ article.articleCollects }} </a>
-          <a class="share" @click="share(article.articleId,index)">分享<span class="iconfont">&#xe73a;</span> </a>
+          <div class="author">
+            <el-link style="color:#111" type="info" @click="$router.push('/user/'+article.userId)"><span
+                class="iconfont">&#xe6b3;</span> {{ article.author }}
+            </el-link>
+          </div>
+          <div class="comment"><span v-html="article.articleContent"></span></div>
+
+          <div class="toolbar">
+            <a class="like" @click="like(article.articleId,index)">点赞<span
+                class="iconfont">&#xe605;</span>{{ article.articleLikes }} </a>
+            <!--          <a class="reply" @click="comment(article.articleId)">评论<span-->
+            <!--              class="iconfont">&#xe646;</span>{{ article.articleComments }} </a>-->
+            <a class="collect" @click="collect(article.articleId,index)">收藏<span
+                class="iconfont">&#xe8b9;</span>{{ article.articleCollects }} </a>
+            <a class="share" @click="share(article.articleId,index)">分享<span class="iconfont">&#xe73a;</span> </a>
+          </div>
         </div>
+
+        <a-divider style="height: 2px; background-color: #afb2b2"/>
       </div>
 
-      <a-divider style="height: 2px; background-color: #afb2b2"/>
-    </div>
     </template>
 
   </div>
@@ -54,8 +60,6 @@
 </template>
 
 <script>
-
-import {ElLoading} from "element-plus";
 
 export default {
   name: 'articleShow',
@@ -83,26 +87,42 @@ export default {
 
     myArticles() {
       this.articles = this.articleList
-      //根据articleList中每个article的userId获取user信息
+      // 根据articleList中每个article的userId获取user信息
       this.articleList.forEach((item, index) => {
         this.$axios.get("/user/" + item.userId).then((res) => {
           if (res.data.data != null) {
             this.articles[index].author = res.data.data.userNickname
-            this.articles[index].articlePic = this.articles[index].articlePic
           }
         })
+
       })
+      // for(let i=0;i<this.articles.length;i++){
+      //   this.$store.dispatch('getUserById', this.userId).then(res => {
+      //     //获取promise中的信息
+      //     this.articles[index].author = res.data.data.userNickname
+      //   })
+      // }
       return this.articles
 
     }
 
 
   },
-  watch: {
-  },
+  watch: {},
   methods: {
     share(articleId) {
       this.$message.success("分享成功")
+    },
+    addCollectMessage(articleId) {
+      let a = this.articles.find(item => item.articleId === articleId)
+      this.$axios.post("/message/add", {
+        messageTitle: "收藏了你的文章",
+        messageContent: a.articleTitle,
+        userId: this.$store.state.user.userId,
+        receiverId: a.userId,
+      }).then(res => {
+        console.log(res.data.data)
+      })
     },
     collect(articleId, index) {
       this.$axios.get("/article/collect/" + articleId).then((res) => {
@@ -111,6 +131,7 @@ export default {
             this.articles[index].articleCollects -= 1
           } else {
             this.articles[index].articleCollects += 1
+            this.addCollectMessage(articleId)
           }
         } else {
           this.$st(res.data.data, 'error')
@@ -278,5 +299,11 @@ export default {
   width: 80%;
   margin-left: 10%;
 
+}
+
+:deep(video,img) {
+  width: 60%;
+  margin-left: 20%;
+  border-radius: 10px;
 }
 </style>

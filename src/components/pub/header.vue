@@ -28,23 +28,38 @@
       <template #overlay>
         <a-menu>
           <a-menu-item>
-            <a href="javascript:;"><span class="iconfont">&#xe689;</span> 常见问题</a>
+            <a><span class="iconfont">&#xe689;</span> 常见问题</a>
           </a-menu-item>
           <a-menu-item>
-            <router-link to="/home/about"><span class="iconfont">&#xe65c;</span> 大事记</router-link>
+            <router-link to="/home/about/bigs"><span class="iconfont">&#xe65c;</span> 大事记</router-link>
           </a-menu-item>
           <a-menu-item>
-            <a href="javascript:;"><span class="iconfont">&#xeb7a;</span> 网站介绍</a>
+            <router-link to="/home/about/bigs"><span class="iconfont">&#xeb7a;</span> 网站介绍</router-link>
           </a-menu-item>
           <a-menu-item>
-            <a href="javascript:;"><span class="iconfont">&#xe606;</span> 开发团队</a>
+            <router-link to="/home/about/team"><span class="iconfont">&#xe606;</span> 开发团队</router-link>
           </a-menu-item>
         </a-menu>
       </template>
     </a-dropdown>
-    <a>
-      <router-link to="/home/video"><span class="iconfont">&#xe8d3;</span> 视频</router-link>
-    </a>
+
+    <a-dropdown>
+      <a>
+        <span class="iconfont">&#xe695;</span> 视频
+      </a>
+      <template #overlay>
+        <a-menu>
+          <a-menu-item>
+            <router-link to="/home/video/pointerpointer.com"><span class="iconfont">&#xe669;</span> 找到你的鼠标
+            </router-link>
+          </a-menu-item>
+          <a-menu-item>
+            <router-link to="/home/video/cupfox.app"><span class="iconfont">&#xe694;</span> 茶杯狐</router-link>
+          </a-menu-item>
+
+        </a-menu>
+      </template>
+    </a-dropdown>
 
     <div @mouseleave="leave" class="search"
          @mouseover="inputStyle.padding='0 6px';inputStyle.width='200px'">
@@ -66,7 +81,15 @@
     <div class="userPic">
       <el-dropdown trigger="hover" style="height: 40px;width: 40px;line-height: 40px">
         <a @click="this.$router.push('/back/info')">
-          <img :src="p(user.userProfilePhoto)">
+          <!--          <img :src="p(user.userProfilePhoto)">-->
+          <a-avatar
+              :src="p(user.userProfilePhoto)"
+              :style="{ backgroundColor: '#067061'  ,verticalAlign: 'middle'}"
+              shape="circle"
+              size="middle"
+          >
+            {{ user.userNickname }}
+          </a-avatar>
         </a>
         <template #dropdown>
           <el-dropdown-menu>
@@ -96,17 +119,21 @@
     <div class="msg">
       <a-tooltip>
         <template #title>消息</template>
-        <a @click="$store.commit('changeMessageVisible',!$store.state.messageVisible)"><span
-            class="iconfont">&#xe607;</span></a>
+        <a-badge :count="$store.state.messagePoint">
+          <a @click="$store.commit('changeMessageVisible',!$store.state.messageVisible)"><span
+              class="iconfont">&#xe607;</span></a>
+        </a-badge>
       </a-tooltip>
       <a-tooltip>
         <template #title>私信</template>
-        <a @click="$store.commit('changeChatVisible',!$store.state.chatVisible)"><span
-            class="iconfont">&#xe6ff;</span></a>
+        <a-badge :count="$store.state.chatPoint">
+          <a @click="$store.commit('changeChatVisible',!$store.state.chatVisible)"><span
+              class="iconfont">&#xe6ff;</span></a>
+        </a-badge>
       </a-tooltip>
 
     </div>
-    <music></music>
+    <!--    <music></music>-->
 
     <!--    <a-switch v-model:checked="checked2" style="float: right;margin-top: 14px;margin-right: 10px;background: #117a8b"-->
     <!--              @change="$store.commit('changeMode')" checked-children="暗" un-checked-children="明"/>-->
@@ -130,7 +157,7 @@ import music from "@/components/pub/music";
 
 export default {
   name: 'h',
-  components: {chat, BgCover, message,music},
+  components: {chat, BgCover, message, music},
   data() {
     return {
 
@@ -143,7 +170,6 @@ export default {
         transition: 'all 0.5s'
       },
       key: '',
-
 
 
     }
@@ -350,19 +376,20 @@ export default {
 
 .header .msg {
   float: right;
-  height: 50px;
+  height: 30px;
   width: 80px;
   right: 120px;
+  margin-top: 10px;
 }
 
 .msg a {
   color: #111111;
   float: left;
   width: 30px;
-  height: 50px;
+  height: 30px;
   text-align: center;
-  line-height: 50px;
-  font-size: 20px;
+  line-height: 30px;
+  font-size: 22px;
 }
 
 .login {

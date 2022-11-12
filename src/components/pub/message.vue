@@ -15,22 +15,32 @@
           </template>
         </a-button>
       </a-tooltip>
-      <el-empty v-if="data.length===0" description="暂无消息">
+      <el-empty v-if="messages.length===0" description="暂无消息">
 
       </el-empty>
       <template v-else>
-        <a-list :data-source="data" class="messageBox" item-layout="horizontal">
+        <a-list :data-source="messages" class="messageBox" item-layout="horizontal">
           <template #renderItem="{ item }">
             <a-list-item>
-              <a-list-item-meta
-                  description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-              >
+              <a-list-item-meta>
+                <template #description>
+                  <span v-html="item.messageContent"></span>
+                </template>
+
                 <template #title>
-                  <a href="https://www.antdv.com/">{{ item.title }}</a>
+                  <a href="javascript:void(0)">{{ item.messageTitle }}</a>
                 </template>
                 <template #avatar>
-                  <user :user='item.user'>
-                    <a-avatar src="https://joeschmoe.io/api/v1/random"/>
+                  <user v-slot="slotP" :userId='item.userId' style="text-align: center">
+                    <a-avatar
+                        :src="p(slotP.photo)"
+                        :style="{ backgroundColor: '#067061'  ,verticalAlign: 'middle'}"
+                        shape="circle"
+                        size="middle"
+                    >
+                      {{ slotP.text }}
+                    </a-avatar>
+                    <div style="font-size: 12px;color: #7c929c">{{ slotP.text }}</div>
                   </user>
                 </template>
               </a-list-item-meta>
@@ -56,25 +66,32 @@ export default {
   data() {
     return {
       logoSrc: '',
-      data: [
-//                {
-//                    title: 'Ant Design Title 1',
-//                },
-//                {
-//                    title: 'Ant Design Title 2',
-//                },
-//                {
-//                    title: 'Ant Design Title 3',
-//                },
-//                {
-//                    title: 'Ant Design Title 4',
-//                },
+      messages: [
+        {
+          userId: 1,
+          messageTitle: '消息标题',
+          messageContent: '消息内容',
+          messageUpdateTime: '2021-01-01 00:00:00'
+        }
       ],
 
     }
   },
   created() {
     this.logoSrc = this.baseURL + '/source/images/logoC.png'
+    this.getMessages()
+  },
+  methods: {
+    getMessages() {
+      this.$axios.get('/message/user/' + this.$store.state.user.userId).then(res => {
+        if (res.data.code === 200) {
+          this.messages = res.data.data
+        } else {
+          this.$st(res.data.data, 'error')
+        }
+      })
+
+    }
   }
 }
 </script>
