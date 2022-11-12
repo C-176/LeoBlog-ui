@@ -315,6 +315,7 @@ export default {
   height: 60%;
   width: 100%;
   font-size: 13px;
+  overflow: hidden;
   text-align: left;
   color: #8590a6;
   line-height: 25px;

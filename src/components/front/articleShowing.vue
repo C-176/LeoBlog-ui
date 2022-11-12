@@ -475,4 +475,10 @@ export default {
   /*height: 100%;*/
   border-radius: 10px;
 }
+
+:deep(pre) {
+  background: #f4f4f4 !important;
+  border-radius: 5px !important;
+  padding: 10px !important;
+}
 </style>

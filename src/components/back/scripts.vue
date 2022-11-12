@@ -307,6 +307,7 @@ export default {
   width: 100%;
   font-size: 13px;
   text-align: left;
+  overflow: hidden;
   color: #8590a6;
   line-height: 25px;
   margin-top: -2px;

@@ -287,6 +287,7 @@ export default {
 .right .comment {
   height: 60%;
   width: 100%;
+  overflow: hidden;
   font-size: 13px;
   text-align: left;
   color: #8590a6;
@@ -301,7 +302,7 @@ export default {
 
 }
 
-:deep(video,img) {
+:deep(video, img) {
   width: 60%;
   margin-left: 20%;
   border-radius: 10px;
