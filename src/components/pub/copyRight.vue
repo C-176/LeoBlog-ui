@@ -1,5 +1,5 @@
 <template>
-  <div class="whole">
+  <div class="copyRight">
     <a-carousel autoplay :dots="false" effect="fade">
 
       <div>
@@ -124,17 +124,16 @@ export default {
   color: #999;
 }
 
-.whole {
+.copyRight {
+  padding: 10px;
   background: #fff;
   height: auto;
-  /*box-shadow: 1px 3px 11px #869d9d;*/
   border-radius: 5px;
-  margin-left: 30px;
-  width: 330px;
   position: fixed;
-  bottom: 20px;
-  right: 5%;
-  /*margin-top: 0*/
+  float: right;
+  bottom: 10px;
+  width: 20%;
+  left: calc(73% + 2px);
 }
 
 .whole div {
@@ -156,5 +155,8 @@ p {
 
 .ant-carousel :deep(.slick-slide h3) {
   color: #fff;
+}
+:deep(.ant-comment-content-detail p){
+  font-size: 1vw !important;
 }
 </style>

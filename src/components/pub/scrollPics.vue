@@ -1,17 +1,11 @@
 <template>
 
   <div class="whole">
-    <!--    <template v-if="loading">-->
-    <!--      <a-skeleton active/>-->
-    <!--      <a-skeleton active/>-->
-    <!--      <a-skeleton active/>-->
-    <!--    </template>-->
 
-    <!--    <template v-else>-->
     <!--      头部滚动图-->
     <div class="a" @mouseleave="leave">
       <transition name="fade">
-        <div v-if="show" style="width: 80%;z-index: 1">
+        <div v-if="show" class="bCover">
           <el-image
               class="b"
               :src="mainPic"
@@ -31,7 +25,7 @@
         </div>
       </div>
     </div>
-    <!--    </template>-->
+
   </div>
 
 </template>
@@ -152,7 +146,7 @@ export default {
 <style scoped>
 
 .fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
+  transition: opacity 1s;
 }
 
 .fade-enter-from, .fade-leave-to {
@@ -165,6 +159,7 @@ export default {
   margin-left: 60px;
   border-radius: 5px;
   margin-top: 60px;
+  padding: 10px 0;
 }
 
 .whole > div {
@@ -176,12 +171,18 @@ export default {
   width: 100%;
   display: flex;
   justify-content: space-evenly;
-  margin: 5px 0 5px 0;
+}
+
+.bCover {
+  width: 80%;
+  /*高度为宽度的0.6倍*/
+  height: 48%;
+  z-index: 1;
 }
 
 .b {
   width: 100%;
-  height: 434px;
+  height: 100%;
   transition: all .5s;
   background-size: cover;
   border-radius: 5px;
@@ -192,8 +193,8 @@ export default {
 }
 
 .c {
-  width: 19%;
-  height: 434px;
+  width: 16%;
+  height: 48%;
   display: flex;
   /* 纵向布局 */
   flex-direction: column;
@@ -203,7 +204,7 @@ export default {
 .d {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 47%;
   right: 0;
   transition: .5s;
   overflow: hidden;
@@ -213,7 +214,8 @@ export default {
 .d img {
   /*position: absolute;*/
   width: 100%;
-  height: 100%;
+  height: 98%;
+  border-radius: 5px;
   /* 小图片上移 */
   /*transform: translate(0, -50px);*/
   transition: .5s;

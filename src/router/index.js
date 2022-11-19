@@ -5,8 +5,8 @@ import 'nprogress/nprogress.css'
 
 
 const routes = [
-    {path: '/', redirect: '/index'},
-    {path: '/write/:articleId', component: () => import('@/components/front/write')},
+    {path: '/', redirect: '/home/index'},
+
     {path: '/test', component: () => import('@/components/test')},
     {path: '/index', component: () => import('@/components/index')},
     {path: '/user', component: () => import('@/components/pub/user')},
@@ -14,6 +14,7 @@ const routes = [
     {
         path: '/home', component: () => import('@/components/home'), redirect: '/home/index',
         children: [
+            {path: '/write/:articleId', component: () => import('@/components/front/write')},
             {path: '/home/index', name: 'index', component: () => import('@/components/front/index_main')},
             {path: '/home/article', component: () => import('@/components/front/articles')},
             {path: '/home/picture', component: () => import('@/components/front/pictures')},
@@ -46,13 +47,21 @@ const router = createRouter({
     routes,
     scrollBehavior(to, from) {
         // console.log(to, from)
+
+
         if (to.hash) {
             return {
                 el: to.hash,
                 behavior: 'smooth'
             }
+        } else {
+            //获取from的滚动条位置
+            if (from.meta.keepAlive) {
+                from.meta.savedPosition = document.body.scrollTop;
+            }
+            return {x: 0, y: to.meta.savedPosition || 0}
         }
-        return {}
+
     }
 })
 router.beforeEach((to, from, next) => {

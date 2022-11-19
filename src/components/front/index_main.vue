@@ -139,7 +139,7 @@ export default {
 /*}*/
 
 :deep(.whole) {
-  margin-left: 60px !important;
+  margin-left: calc(7.5% + 3px) !important;
 }
 
 /*::-webkit-scrollbar {*/

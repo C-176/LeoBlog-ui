@@ -81,21 +81,19 @@ export default {
 .rightSelf {
   background: #fff;
   height: auto;
-  /*box-shadow: 1px 3px 11px #869d9d;*/
   border-radius: 5px;
-  margin-left: 30px;
-  width: 330px;
   position: fixed;
+  float: right;
   top: 60px;
-  right: 5%;
-  /*margin-top: 0*/
+  width: 20%;
+  left: calc(73% + 2px);
 }
 
 
 .rightSelf .script {
   width: 100%;
   height: 30px;
-  margin: 5px;
+  padding: 5px;
   position: relative;
   line-height: 30px;
   font-size: 13px;
@@ -103,7 +101,6 @@ export default {
 }
 
 .rightSelf .script a {
-  /* display: block; */
   height: 100%;
   width: 100%;
   color: #9ca29d;
@@ -113,11 +110,11 @@ export default {
 }
 
 .rightSelf .user {
-  height: 120px;
+  height: 105px;
   width: 100%;
-  /*background: #fff;*/
-  padding: 20px 10px;
-  background-color: rgba(216, 227, 231, 0.39);
+  padding: 10px;
+  background-color: #d8e3e763;
+  overflow: hidden;
 }
 
 .user .img {
@@ -142,100 +139,61 @@ export default {
   /*border-style: none;*/
 }
 
-.rightSelf .creat {
-  margin-top: 0px;
-  width: 100%;
-  height: 62px;
-  /* background-color: #0086b3; */
-  line-height: 62px;
-}
-
 .intro {
   float: left;
   width: 60%;
-  height: 120px;
+  height: 105px;
   line-height: 40px;
   text-align: left;
 }
 
 .intro .name {
-  height: 40px;
+  height: 20px;
   width: 100%;
   color: #134857;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 600;
-  line-height: 40px;
+  line-height: 20px;
 }
 
 .intro .intro1 {
-  height: 60px;
+  padding-bottom: 5px;
+  height: 75px;
   width: 100%;
   color: #134857;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 12px;
+  line-height: 20px;
   text-align: left;
-}
-
-.creat > span {
-  width: 0px;
-  height: 50px;
-  margin-left: 35px;
-  float: left;
-  font-size: 35px;
-  margin-right: 140px;
-  transition: width 0.5s;
-  line-height: 50px;
-}
-
-.creat > a {
-  display: block;
-  margin: 0px 21px;
-  color: #8590a6;
-  float: left;
-  height: 100%;
-  transition: all 0.5s;
-  line-height: 62px;
-  font-weight: 600;
-}
-
-
-.creat > a > span {
-  font-size: 30px;
+  overflow: hidden;
+  -webkit-mask-image: -webkit-linear-gradient(bottom,rgba(0,0,0,0) 5%,rgb(18,71,85) 30%);
 }
 
 .read {
   height: 80px;
   width: 100%;
-  /* background-color: rgba(216, 227, 231, 0.39); */
-  color: black;
-  font-size: 15px;
+  font-size: 14px;
   padding: 10px;
   line-height: 30px;
 }
 
 .news {
-  margin-top: 7px;
   height: auto;
   width: 100%;
-  /*background-color: #ff6700;*/
-  color: black;
   font-size: 14px;
   font-weight: 600;
   padding: 10px;
-  line-height: 27px;
+  line-height: 25px;
   border-top: 1px solid #8590a661;
 }
 
 .go {
-  margin: 20px auto 20px auto;
+  margin: 10px auto 20px;
   width: 50%;
   height: 40px;
   line-height: 40px;
   background-color: #eef2f4;
   border-radius: 10px;
-  /*box-shadow: 1px 1px 5px #134857;*/
   outline: none;
-  /*border: none;*/
   position: relative;
 
 }
@@ -270,7 +228,7 @@ export default {
   height: 100%;
   width: 100%;
   color: #134857;
-  font-size: 15px;
+  font-size: 1vw;
   font-weight: 600;
   border-radius: 10px;
 }
@@ -280,17 +238,23 @@ export default {
 }
 
 .read .artSum, .read .comSum {
-  float: left;
   height: 100%;
-  width: 45%;
-  font-size: 16px;
+  width: 40%;
+  font-size: 14px;
   color: #134857;
   border-radius: 10px;
   background: #f0f4f6;
-  line-height: 29px;
+  line-height: 30px;
+  margin: 0 5%;
 }
-
-.read .comSum {
-  margin-left: 30px;
+.artSum{
+  float:left;
+}
+.comSum{
+  float:right;
+}
+.read .artSum:hover, .read .comSum:hover {
+  background: #eef2f4;
+  cursor: pointer;
 }
 </style>
