@@ -174,9 +174,9 @@ export default {
 }
 
 .bCover {
-  width: 80%;
+  width: 82.5%;
   /*高度为宽度的0.6倍*/
-  height: 48%;
+  /*height: 49.2%;*/
   z-index: 1;
 }
 
@@ -194,7 +194,7 @@ export default {
 
 .c {
   width: 16%;
-  height: 48%;
+  /*height: 100%;*/
   display: flex;
   /* 纵向布局 */
   flex-direction: column;
@@ -204,7 +204,7 @@ export default {
 .d {
   position: relative;
   width: 100%;
-  height: 47%;
+  /*height: 47%;*/
   right: 0;
   transition: .5s;
   overflow: hidden;
@@ -214,7 +214,7 @@ export default {
 .d img {
   /*position: absolute;*/
   width: 100%;
-  height: 98%;
+  height: 100%;
   border-radius: 5px;
   /* 小图片上移 */
   /*transform: translate(0, -50px);*/

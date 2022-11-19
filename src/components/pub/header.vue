@@ -5,11 +5,11 @@
         <img id="logo" :src="p(logoSrc)" alt="">
       </router-link>
     </div>
-    <a href="">
-      <router-link to="/home/index"><span class="iconfont">&#xe60f;</span>
-        首页
-      </router-link>
-    </a>
+<!--    <a href="">-->
+<!--      <router-link to="/home/index"><span class="iconfont">&#xe60f;</span>-->
+<!--        首页-->
+<!--      </router-link>-->
+<!--    </a>-->
     <a href="">
       <router-link to="/home/article"><span class="iconfont">&#xe610;</span>
         文章
@@ -49,6 +49,10 @@
       </a>
       <template #overlay>
         <a-menu>
+          <a-menu-item>
+          <router-link to="/home/video/programmercarl.com"><span class="iconfont">&#xe65c;</span> 代码随想录
+          </router-link>
+        </a-menu-item>
           <a-menu-item>
             <router-link to="/home/video/pointerpointer.com"><span class="iconfont">&#xe669;</span> 找到你的鼠标
             </router-link>
@@ -348,7 +352,7 @@ export default {
 }
 
 .header > a {
-  margin: 10px 10px;
+  margin: 10px 0;
   color: #111111;
   float: left;
   /*  height: 50px;*/
@@ -357,7 +361,7 @@ export default {
   font-weight: 400;
 
   height: 30px;
-  width: 60px;
+  width: 6%;
   line-height: 30px;
   border-radius: 5px;
 }
@@ -371,6 +375,7 @@ export default {
 
 .header > a > span {
   font-size: 16px;
+  line-height: 30px;
 }
 
 
