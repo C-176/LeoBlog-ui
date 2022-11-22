@@ -38,7 +38,8 @@
           <div class="detail">{{ article.user.userCertification }}</div>
         </div>
       </div>
-      <div class="content">
+
+      <div class="content" ref="articleContent">
         <span v-html="article.articleContent"></span>
       </div>
 
@@ -85,7 +86,12 @@
 
   </comment-template>
 
+<!--  显示放大图片的组件-->
+  <big-img :visible="photoVisible" :url="bigImgUrl" @closeClick="()=>{photoVisible=false}"></big-img>
+
+
   <a-back-top/>
+  <catlog :container="container"></catlog>
 
 </template>
 
@@ -95,12 +101,18 @@ import commentTemplate from "@/components/pub/commentTemplate";
 import {Divider, Tag} from 'ant-design-vue';
 import {EnterOutlined} from '@ant-design/icons-vue';
 import user from "@/components/pub/user";
+import bigImg from "@/components/pub/bigImg";
+import catlog from "@/components/pub/catlog";
+
 
 export default {
   name: 'forward-article',
-  components: {h, commentTemplate, Divider, Tag, EnterOutlined, user},
+  components: {h, commentTemplate, Divider, Tag, EnterOutlined, user,bigImg,catlog},
   data() {
     return {
+      container: '#xxxxxxxxxxxx',
+      photoVisible: false,
+      bigImgUrl: "",
       loading: true,
       showComment: false,
       commentIn: '',
@@ -191,7 +203,62 @@ export default {
     this.getComments()
 
   },
+
+  mounted(){
+    //给所有图片添加点击事件
+    let imgs = document.querySelectorAll('.content img')
+    if(imgs.length == 0){
+      setTimeout(()=>{
+        imgs = document.querySelectorAll('.content img')
+        imgs.forEach((item)=>{
+          item.addEventListener('click',()=>{
+            this.photoVisible = true
+            this.bigImgUrl = item.src
+          })
+        })
+      },1000)
+    }else{
+      imgs.forEach((item)=>{
+        item.addEventListener('click',()=>{
+          this.photoVisible = true
+          this.bigImgUrl = item.src
+        })
+      })
+    }
+    this.addAchor()
+
+
+  }
+  ,
   methods: {
+    // showBigImage(e) {//点击图片函数，点击后，把photoVisible设置成true
+    //   if (e != "") {
+    //     this.photoVisible = true;
+    //     this.bigImgUrl = e.currentTarget.src;
+    //   }},
+    addAchor(){
+      // //给.content下的所有h标签添加锚点
+      // let h = document.querySelectorAll('.content h1,.content h2,.content h3,.content h4,.content h5,.content h6')
+      // if(h.length == 0){
+      //   setTimeout(()=>{
+      //     h.forEach((item)=>{
+      //       item.id = item.innerText
+      //     })
+      //   },1000)
+      // }else{
+      //   h.forEach((item)=>{
+      //     item.id = item.innerText
+      //   })
+      // }
+      //将h标签的内容添加到目录中
+
+
+
+
+
+
+    },
+
 
     getColor() {
       return this.colors[Math.floor(Math.random() * this.colors.length)]
@@ -314,6 +381,10 @@ export default {
     article() {
       this.$nextTick(() => {
         this.loading = false
+        this.addAchor()
+        this.container = '.content'
+
+
       })
     }
   }
@@ -470,12 +541,21 @@ export default {
 }
 
 :deep(video) {
-  width: 60%;
-  margin-left: 20%;
+  width: 80%;
+  margin-left: 10%;
   /*height: 100%;*/
   border-radius: 10px;
 }
-
+:deep(p img) {
+  width: 80% !important;
+  margin-left: 10% !important;
+  /*height: 100%;*/
+  border-radius: 10px;
+  box-shadow: 1px 3px 11px #134857;
+}
+:deep(p img:hover) {
+  cursor: pointer;
+}
 :deep(pre) {
   background: #f4f4f4 !important;
   border-radius: 5px !important;

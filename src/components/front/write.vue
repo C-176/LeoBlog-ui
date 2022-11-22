@@ -271,7 +271,7 @@ export default {
   text-align: left;
   background-color: #fff;
   padding: 10px;
-  padding-top: 70px;
+  padding-top: 80px;
 }
 
 .labels {

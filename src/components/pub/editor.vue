@@ -14,11 +14,8 @@
       <!--            </a-affix>-->
     </el-affix>
     <Editor
-        style=" overflow-y: hidden; font-size: 18px; border-bottom: 1px solid #ccc;outline: none"
+        style=" overflow-y: hidden; font-size: 16px; border-bottom: 1px solid #ccc;outline: none"
         v-model="valueTitle"
-        :defaultConfig="editorConfig"
-        mode="simple"
-        @onCreated="handleCreated"
 
 
     />

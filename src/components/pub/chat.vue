@@ -176,7 +176,10 @@
       </div>
 
     </div>
+
   </transition>
+  <!--  显示放大图片的组件-->
+  <big-img :visible="photoVisible" :url="bigImgUrl" @closeClick="()=>{photoVisible=false}"></big-img>
 </template>
 
 <script>
@@ -188,6 +191,7 @@ import Swal from "sweetalert2";
 import {Boot} from '@wangeditor/editor'
 import ctrlEnterModule from '@wangeditor/plugin-ctrl-enter'
 import {mapState} from "vuex";
+import bigImg from "@/components/pub/bigImg";
 
 Boot.registerModule(ctrlEnterModule)
 export default {
@@ -197,6 +201,7 @@ export default {
     EnterOutlined,
     user,
     Editor, Toolbar,
+    bigImg
 
   },
   data() {
@@ -243,6 +248,8 @@ export default {
         recordContent: 'hello',
         recordUpdateTime: '2021-05-01 12:00:00',
       },
+      photoVisible: false,
+      bigImgUrl: "",
       chatter: null,
       isSelected: [],
       isHovered: [],
@@ -358,6 +365,17 @@ export default {
         this.$nextTick(() => {
           this.$refs.chat.scrollTop = this.$refs.chat.scrollHeight
           this.$loading = false
+          //给所有img标签添加点击事件
+          let imgs = document.querySelectorAll('#chat #myMessage img, #chat #yourMessage img')
+          console.log('imgs', imgs)
+          if (imgs.length != 0) {
+            imgs.forEach((item) => {
+              item.addEventListener('click', () => {
+                this.photoVisible = true
+                this.bigImgUrl = item.src
+              })
+            })
+          }
         })
       },
       deep: true
@@ -1067,6 +1085,9 @@ export default {
 
   /*margin-top: 10px;*/
 }
+:deep(p img:hover) {
+  cursor: pointer !important;
+}
 
 #myBox {
   max-width: 60%;
@@ -1103,8 +1124,8 @@ export default {
 
 
 .select, .hovers {
-  width: 82%;
-  height: 12%;
+  width: 85%;
+  /*height: 12%;*/
   border: 1px solid #838ea4;
   /*background: #838ea4;*/
 

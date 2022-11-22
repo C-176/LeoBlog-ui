@@ -28,8 +28,10 @@
           <input v-model="rememberMe" name="rememberMe" type="checkbox">
           <span>记住密码</span>
           <a class="changePwd" @click="changePwd">忘记密码</a>
+          <a class="changePwd" @click="alertTest">测试用户</a>
         </div>
         <button class="login1" @click="LR">{{ login ? "登陆" : "注册" }}</button>
+
 
 
       </form>
@@ -90,6 +92,14 @@ export default {
 
   },
   methods: {
+    alertTest() {
+      Swal.fire({
+        title: '测试用户',
+        text: '用户名：test1 密码：111111',
+        icon: 'info',
+        confirmButtonText: '确定'
+      })
+    },
 
     LR() {
       return new Promise((resolve, reject) => {
