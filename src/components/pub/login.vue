@@ -16,7 +16,7 @@
           <a-tooltip>
             <template #title>刷新验证码</template>
             <a>
-              <img id="codeImg" :src="captchaUrl" :style="{marginTop: 10+'px'}" alt="" @click="refreshCaptCha"></a>
+              <img id="codeImg" :src="captchaUrl" :style="{marginTop: 10+'px',borderRadius:5+'px'}" alt="" @click="refreshCaptCha"></a>
           </a-tooltip>
         </template>
         <template v-else>
@@ -253,7 +253,7 @@ export default {
 }
 
 #login .changePwd:hover {
-  background-color: #7c929c;
+  /*background-color: #7c929c;*/
   color: #fff !important;
   transition: background-color 0.2s;
 }
@@ -262,9 +262,10 @@ export default {
   /* padding-top: 10px; */
   float: right;
   width: 80px;
-  height: 40px;
+  margin-top: 5px;
+  height: 30px;
   /*margin-left: 210px;*/
-  line-height: 40px;
+  line-height: 30px;
   border-radius: 10px;
 }
 

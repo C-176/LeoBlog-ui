@@ -74,7 +74,7 @@
 <!--               @blur="inputStyle.padding='0';inputStyle.width='0'"-->
 <!--               type="text" autocomplete="off" placeholder="在此搜索..."-->
 <!--               v-model="key">-->
-        <input type="text" class="searchInput" placeholder="在此搜索..." style="padding: 0 6px; width: 200px" >
+        <input v-model="key" type="text" class="searchInput" autocomplete="off" placeholder="在此搜索..." style="padding: 0 6px; width: 200px" >
         <button class="searchImg"
                 @click="search">
           <span class="iconfont">&#xe644;</span>

@@ -1,5 +1,5 @@
 <template v-if="index">
-  <body style="height: 100vh;overflow: hidden;">
+  <body >
   <bar></bar>
 
   <div class="container">
@@ -57,21 +57,14 @@ export default {
 
 <style scoped>
 body {
-  margin: 0 auto;
-  /*background: #134857;*/
-  font-weight: 600;
-  /* margin-top: 50px; */
-}
-
-body {
   /*背景图片*/
   background-size: 100%;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  height: 100%;
-  width: 100%;
+  height: 100vh;
   position: relative;
-  /*overflow: hidden;*/
+  overflow: hidden;
+
 
 
 }
@@ -89,46 +82,6 @@ body {
   /* margin-right: 20px; */
   transition: width 1s;
 }
-
-
-.login, .register {
-  position: absolute;
-  height: 50px;
-  top: calc(50% - 0px);
-  width: 110px;
-  font-size: 25px;
-  line-height: 50px;
-  z-index: 2;
-  border-radius: 5px;
-  margin: 5px 0;
-}
-
-.login a, .register a {
-  display: block;
-  height: 100%;
-  width: 100%;
-  text-decoration: none;
-  color: #134857;
-
-}
-
-.login:hover, .register:hover {
-  text-decoration: none;
-  color: #134857;
-  background-color: #228fad29;
-  transition: all 0.5s;
-  box-shadow: 1px 3px 3px #13485729;
-
-}
-
-.login {
-  right: calc(50% - -420px);
-}
-
-.register {
-  right: calc(50% - 460px);
-}
-
 
 .word {
   width: 500px;
@@ -164,10 +117,13 @@ body {
   color: #134857;
 
 }
+.login a:hover,.register a:hover{
+  color: #87b5c3 !important;
+}
 
 .login:hover, .register:hover {
   text-decoration: none;
-  color: #134857;
+
   background-color: #13485729;
   transition: all 0.5s;
   box-shadow: 1px 3px 3px #13485729;
