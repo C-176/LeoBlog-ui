@@ -28,6 +28,9 @@
         @click="handleFocus"
     />
   </div>
+  <catlog container=".whole"></catlog>
+
+
 </template>
 
 
@@ -37,11 +40,12 @@ import {Editor, Toolbar} from '@wangeditor/editor-for-vue'
 import {Boot} from '@wangeditor/editor'
 import markdownModule from '@wangeditor/plugin-md'
 import Swal from "sweetalert2";
+import catlog from "@/components/pub/catlog";
 
 Boot.registerModule(markdownModule)
 export default {
   name: 'editor',
-  components: {Editor, Toolbar, Boot},
+  components: {Editor, Toolbar, Boot, catlog},
   data() {
     return {
       save: true,
@@ -245,6 +249,14 @@ export default {
 </script>
 
 <style scoped>
-
+:deep(p img,p video) {
+  width: 80% !important;
+  border-radius: 5px !important;
+  margin-left: 10% !important;
+  box-shadow: 1px 3px 11px #134857;
+}
+:deep(p img:hover) {
+  cursor: pointer;
+}
 
 </style>

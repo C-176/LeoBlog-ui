@@ -931,11 +931,13 @@ export default {
   padding: 2px 10px;
   border-radius: 10px;
   transition: all 0.3s;
+  border: 2px solid #fdfdfd;
 
 }
 
 .user:hover {
   cursor: pointer;
+
 
 }
 
@@ -1010,13 +1012,10 @@ export default {
 
 }
 
-:deep(p img) {
+:deep(p img,p video) {
   width: 100% !important;
 }
 
-:deep(video) {
-  width: 100% !important;
-}
 
 .chatMessage .userIntro {
   width: 100%;
@@ -1124,9 +1123,9 @@ export default {
 
 
 .select, .hovers {
-  width: 85%;
+  /*width: 80%;*/
   /*height: 12%;*/
-  border: 1px solid #838ea4;
+  border: 2px solid #838ea4;
   /*background: #838ea4;*/
 
 }

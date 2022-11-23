@@ -546,7 +546,7 @@ export default {
   /*height: 100%;*/
   border-radius: 10px;
 }
-:deep(p img) {
+:deep(p img,p video) {
   width: 80% !important;
   margin-left: 10% !important;
   /*height: 100%;*/

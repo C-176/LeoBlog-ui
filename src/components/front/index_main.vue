@@ -56,17 +56,19 @@ export default {
   },
   mounted() {
     // 获取指定元素
-    const scrollview = this.$refs.show
+    // const scrollview = this.$refs.show
     // 添加滚动监听，该滚动监听了拖拽滚动条
     // 尾部的 true 最好加上，我这边测试没加 true ，拖拽滚动条无法监听到滚动，加上则可以监听到拖拽滚动条滚动回调
-    scrollview.addEventListener('scroll', this.scrollBottom, true)
+    // scrollview.addEventListener('scroll', this.scrollBottom, true)
+    window.addEventListener('scroll', this.scrollBottom)
   },
   beforeRouteLeave() {
 
     // 获取指定元素
-    const scrollview = this.$refs.show
+    // const scrollview = this.$refs.show
     // 移除滚动监听
-    scrollview.removeEventListener('scroll', this.scrollBottom, true)
+    // scrollview.removeEventListener('scroll', this.scrollBottom, true)
+    window.removeEventListener('scroll', this.scrollBottom)
   },
 
   methods: {
@@ -76,19 +78,19 @@ export default {
       this.$axios.get('/article/list/' + this.currentPage + '/' + this.pageSize).then((res) => {
         let map = res.data.data
         this.articleList = this.articleList.concat(map.records)
-        this.$nextTick(() => {
-          this.max = document.documentElement.scrollHeight
-          this.value = document.documentElement.scrollTop || document.body.scrollTop;
-        })
+        // this.$nextTick(() => {
+        //   this.max = document.documentElement.scrollHeight
+        //   this.value = document.documentElement.scrollTop || document.body.scrollTop;
+        // })
       })
     }
     ,
     //如果滚动条到最底下，加载更多
     scrollBottom() {
       //监听滚动条滚动事件
-      let scrollTop = document.body.scrollTop;
-      let clientHeight = document.body.clientHeight;
-      let scrollHeight = document.body.scrollHeight;
+      let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      let scrollHeight = document.documentElement.scrollHeight;
+      let clientHeight = document.documentElement.clientHeight;
       this.max = scrollHeight - clientHeight
       this.value = scrollTop;
       if (scrollTop + clientHeight >= scrollHeight) {

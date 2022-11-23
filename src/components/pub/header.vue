@@ -68,12 +68,13 @@
     <div @mouseleave="leave" class="search"
          @mouseover="inputStyle.padding='0 6px';inputStyle.width='200px'">
       <form action="javascript:void(0)">
-        <input class="searchInput" :style="inputStyle"
-               @input="inputStyle.padding='0 6px';inputStyle.width='200px'"
-               @mouseenter="inputStyle.padding='0 6px';inputStyle.width='200px'"
-               @blur="inputStyle.padding='0';inputStyle.width='0'"
-               type="text" autocomplete="off" placeholder="在此搜索..."
-               v-model="key">
+<!--        <input class="searchInput" :style="inputStyle"-->
+<!--               @input="inputStyle.padding='0 6px';inputStyle.width='200px'"-->
+<!--               @mouseenter="inputStyle.padding='0 6px';inputStyle.width='200px'"-->
+<!--               @blur="inputStyle.padding='0';inputStyle.width='0'"-->
+<!--               type="text" autocomplete="off" placeholder="在此搜索..."-->
+<!--               v-model="key">-->
+        <input type="text" class="searchInput" placeholder="在此搜索..." style="padding: 0 6px; width: 200px" >
         <button class="searchImg"
                 @click="search">
           <span class="iconfont">&#xe644;</span>
@@ -288,6 +289,7 @@ export default {
 }
 
 .searchImg {
+  outline: none;
   position: relative;
   color: #d8e3e7;
   float: right;

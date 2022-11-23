@@ -1,7 +1,8 @@
 <template>
   <div class="rightSelf">
 
-    <div class="script"><span class="iconfont">&#xe823;</span> 创作中心
+    <div class="script">
+<!--      <span class="iconfont">&#xe823;</span> 创作中心-->
       <a @click="$router.push('/back/scripts')">
         <span class="iconfont">&#xe7c4;</span>草稿箱 ({{ scriptSize }})</a></div>
     <div class="user">
@@ -102,10 +103,10 @@ export default {
 
 .rightSelf .script a {
   height: 100%;
-  width: 100%;
+  /*width: 100%;*/
   color: #9ca29d;
   font-size: 13px;
-  margin-left: 150px;
+  float:right;
   font-weight: 400;
 }
 

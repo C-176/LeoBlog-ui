@@ -2,7 +2,7 @@
   <h></h>
   <bread>创作</bread>
   <div class="whole">
-    <editor :articleId="$route.params.articleId"></editor>
+    <editor class="editor" :articleId="$route.params.articleId"></editor>
     <div class="labels">
       <Divider orientation="left">标签</Divider>
       <div>
@@ -59,6 +59,8 @@
     <!--  <comment-template></comment-template>-->
   </div>
   <a-back-top/>
+
+
 </template>
 
 

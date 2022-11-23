@@ -1,12 +1,12 @@
 <template>
-  <div class="catalog-card" v-if="Object.keys(titles).length > 0">
+  <div class="catalog-card">
     <div class="catalog-card-header">
       <div>
-                <span
-                ><font-awesome-icon
-                    :icon="['fas', 'bars-staggered']"
-                    class="catalog-icon"
-                /></span>
+        <!--                <span-->
+        <!--                ><font-awesome-icon-->
+        <!--                    :icon="['fas', 'bars-staggered']"-->
+        <!--                    class="catalog-icon"-->
+        <!--                /></span>-->
         <span>目录</span>
       </div>
       <span class="progress">{{ progress }}</span>
@@ -32,167 +32,176 @@
 </template>
 
 <script>
-import {reactive, ref,watch} from "vue";
 
 export default {
   name: "catlog",
-  setup(props) {
-
-    let titles = reactive(getTitles(props.container));
-
-    let currentTitle = reactive({});
-    let progress = ref(0);
-    //监听props
-    watch(
-      () => props.container,
-      (newVal) => {
-        console.log("props.container", newVal);
-        titles = reactive(getTitles(newVal));
-      }
-    );
-
-    // 获取目录的标题
-    function getTitles(val) {
-
-      let titles = [];
-      let levels = ["h1", "h2", "h3"];
+  data() {
+    return {
+      titles: [],
+      currentTitle: {},
+      progress: 0,
+      scrollTop: 0,
+      scrollHeight: 0,
+      clientHeight: 0,
+    };
+  },
+  mounted() {
+    setTimeout(() => {
+      this.getTitles();
+      // this.$nextTick(() => {
+        // 监听滚动事件并更新样式
+        window.addEventListener("scroll", this.handleScroll);
+      // });
+    }, 1000);
 
 
-      let articleElement = document.querySelector(val);
-      // console.log("articleElement", articleElement);
 
-      if (!articleElement) {
-          return titles;
-        }
-
-        let elements = Array.from(articleElement.querySelectorAll("*"));
-
-        // 调整标签等级
-        let tagNames = new Set(
-            elements.map((el) => el.tagName.toLowerCase())
-        );
-        for (let i = levels.length - 1; i >= 0; i--) {
-          if (!tagNames.has(levels[i])) {
-            levels.splice(i, 1);
-          }
-        }
-
-        let serialNumbers = levels.map(() => 0);
-        for (let i = 0; i < elements.length; i++) {
-          const element = elements[i];
-          let tagName = element.tagName.toLowerCase();
-          let level = levels.indexOf(tagName);
-          if (level == -1) continue;
-
-          let id = tagName + "-" + element.innerText + "-" + i;
-          let node = {
-            id,
-            level,
-            parent: null,
-            children: [],
-            rawName: element.innerText,
-            scrollTop: element.offsetTop,
-          };
-
-          if (titles.length > 0) {
-            let lastNode = titles.at(-1);
-
-            // 遇到子标题
-            if (lastNode.level < node.level) {
-              node.parent = lastNode;
-              lastNode.children.push(node);
-            }
-            // 遇到上一级标题
-            else if (lastNode.level > node.level) {
-              serialNumbers.fill(0, level + 1);
-              let parent = lastNode.parent;
-              while (parent) {
-                if (parent.level < node.level) {
-                  parent.children.push(node);
-                  node.parent = parent;
-                  break;
-                }
-                parent = parent.parent;
-              }
-            }
-            // 遇到平级
-            else if (lastNode.parent) {
-              node.parent = lastNode.parent;
-              lastNode.parent.children.push(node);
-            }
-          }
-
-          serialNumbers[level] += 1;
-          let serialNumber = serialNumbers.slice(0, level + 1).join(".");
-
-          node.isVisible = node.parent == null;
-          node.name = serialNumber + ". " + element.innerText;
-          titles.push(node);
-        }
-
-        return titles;
-
-    }
-
-    // 监听滚动事件并更新样式
-    window.addEventListener("scroll", function () {
-      progress.value =
+  },
+  beforeRouteLeave() {
+    window.removeEventListener("scroll", this.handleScroll);
+  },
+  methods: {
+    handleScroll() {
+      this.progress =
           parseInt(
-              (window.body.scrollY / document.documentElement.scrollHeight) *
+              (window.scrollY / document.documentElement.scrollHeight) *
               100
           ) + "%";
 
+
       let visibleTitles = [];
 
-      for (let i = titles.length - 1; i >= 0; i--) {
-        const title = titles[i];
+      for (let i = this.titles.length - 1; i >= 0; i--) {
+        const title = this.titles[i];
         if (title.scrollTop <= window.scrollY) {
-          if (currentTitle.id === title.id) return;
+          if (this.currentTitle.id === title.id) return;
 
-          Object.assign(currentTitle, title);
+          Object.assign(this.currentTitle, title);
 
           // 展开节点
-          setChildrenVisible(title, true);
+          this.setChildrenVisible(title, true);
           visibleTitles.push(title);
 
           // 展开父节点
           let parent = title.parent;
           while (parent) {
-            setChildrenVisible(parent, true);
+            this.setChildrenVisible(parent, true);
             visibleTitles.push(parent);
             parent = parent.parent;
           }
 
           // 折叠其余节点
-          for (const t of titles) {
+          for (const t of this.titles) {
             if (!visibleTitles.includes(t)) {
-              setChildrenVisible(t, false);
+              this.setChildrenVisible(t, false);
             }
           }
 
           return;
         }
       }
-    });
+
+    },
+    // 获取目录的标题
+    getTitles() {
+
+      let titles = [];
+      let levels = ["h1", "h2", "h3"];
+
+
+      let articleElement = document.querySelector(this.container);
+
+      if (!articleElement) {
+        this.titles = titles;
+        return
+      }
+
+      let elements = Array.from(articleElement.querySelectorAll("*"));
+
+      // 调整标签等级
+      let tagNames = new Set(
+          elements.map((el) => el.tagName.toLowerCase())
+      );
+      for (let i = levels.length - 1; i >= 0; i--) {
+        if (!tagNames.has(levels[i])) {
+          levels.splice(i, 1);
+        }
+      }
+
+      let serialNumbers = levels.map(() => 0);
+      for (let i = 0; i < elements.length; i++) {
+        const element = elements[i];
+        let tagName = element.tagName.toLowerCase();
+        let level = levels.indexOf(tagName);
+        if (level == -1) continue;
+
+        let id = tagName + "-" + element.innerText + "-" + i;
+        let node = {
+          id,
+          level,
+          parent: null,
+          children: [],
+          rawName: element.innerText,
+          scrollTop: element.offsetTop,
+        };
+
+        if (titles.length > 0) {
+          let lastNode = titles.at(-1);
+
+          // 遇到子标题
+          if (lastNode.level < node.level) {
+            node.parent = lastNode;
+            lastNode.children.push(node);
+          }
+          // 遇到上一级标题
+          else if (lastNode.level > node.level) {
+            serialNumbers.fill(0, level + 1);
+            let parent = lastNode.parent;
+            while (parent) {
+              if (parent.level < node.level) {
+                parent.children.push(node);
+                node.parent = parent;
+                break;
+              }
+              parent = parent.parent;
+            }
+          }
+          // 遇到平级
+          else if (lastNode.parent) {
+            node.parent = lastNode.parent;
+            lastNode.parent.children.push(node);
+          }
+        }
+
+        serialNumbers[level] += 1;
+        let serialNumber = serialNumbers.slice(0, level + 1).join(".");
+
+        node.isVisible = node.parent == null;
+        node.name = serialNumber + ". " + element.innerText;
+        titles.push(node);
+      }
+
+      this.titles = titles;
+    },
+
 
     // 设置子节点的可见性
-    function setChildrenVisible(title, isVisible) {
+    setChildrenVisible(title, isVisible) {
       for (const child of title.children) {
         child.isVisible = isVisible;
       }
-    }
+    },
 
     // 滚动到指定的位置
-    function scrollToView(scrollTop) {
+    scrollToView(scrollTop) {
       window.scrollTo({top: scrollTop, behavior: "smooth"});
-    }
+    },
 
-    return {titles, currentTitle, progress, scrollToView};
   },
   props: {
     container: {
       type: String,
-      default: ".post-body .article-content",
+      default: "body",
     },
   },
 };
@@ -200,10 +209,10 @@ export default {
 
 <style scoped>
 .catalog-card {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 3px 8px 6px rgba(7, 17, 27, 0.05);
-  padding: 20px 24px;
+  background: #fdfdfd;
+  border-radius: 5px;
+  /*box-shadow: 0 3px 8px 6px rgba(7, 17, 27, 0.05);*/
+  padding: 10px 24px;
   width: 14%;
   position: fixed;
   top: 80px;
@@ -214,7 +223,7 @@ export default {
 
 .catalog-card-header {
   text-align: left !important;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -223,34 +232,34 @@ export default {
 .catalog-icon {
   font-size: 18px;
   margin-right: 10px;
-  color: dodgerblue;
+  /*color: dodgerblue;*/
 }
 
 .catalog-card-header div > span {
-  font-size: 17px;
+  font-size: 14px;
   color: #4c4948;
 }
 
 .progress {
   color: #a9a9a9;
-  font-style: italic;
+  /*font-style: bold;*/
   font-size: 140%;
 }
 
 .catalog-content {
   max-height: calc(100vh - 120px);
   overflow: auto;
-  margin-right: -24px;
-  padding-right: 20px;
+  margin-right: -20px;
+  padding-right: 16px;
 }
 
 .catalog-item {
   color: #666261;
   margin: 5px 0;
-  line-height: 28px;
+  line-height: 20px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  font-size: 14px;
+  font-size: 13px;
   padding: 2px 6px;
   display: -webkit-box;
   overflow: hidden;
@@ -261,13 +270,14 @@ export default {
 }
 
 .active {
-  /*//background-color: #fff;*/
-  color: white;
-
+  background-color: #ecf0f3;
+  color: #111111;
+  border-radius: 5px;
 }
 
-.active:hover {
-  background-color: #0c82e9;
-  color: white;
+.not-active:hover, .active:hover {
+  background-color: #ecf0f3;
+  color: #111111;
+  border-radius: 5px;
 }
 </style>
