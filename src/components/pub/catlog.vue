@@ -177,7 +177,8 @@ export default {
         let serialNumber = serialNumbers.slice(0, level + 1).join(".");
 
         node.isVisible = node.parent == null;
-        node.name = serialNumber + ". " + element.innerText;
+        // node.name = serialNumber + ". " + element.innerText;
+        node.name =  element.innerText;
         titles.push(node);
       }
 
@@ -212,18 +213,19 @@ export default {
   background: #fdfdfd;
   border-radius: 5px;
   /*box-shadow: 0 3px 8px 6px rgba(7, 17, 27, 0.05);*/
-  padding: 10px 24px;
+  padding: 0 24px;
   width: 14%;
   position: fixed;
   top: 80px;
   left: 2%;
   box-sizing: border-box;
   text-align: left;
+  border: 1px solid #e8e8e8;
 }
 
 .catalog-card-header {
   text-align: left !important;
-  margin-bottom: 5px;
+  /*margin-bottom: 5px;*/
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -236,14 +238,14 @@ export default {
 }
 
 .catalog-card-header div > span {
-  font-size: 14px;
+  font-size: 100%;
   color: #4c4948;
 }
 
 .progress {
   color: #a9a9a9;
   /*font-style: bold;*/
-  font-size: 140%;
+  font-size: 100%;
 }
 
 .catalog-content {
@@ -255,11 +257,11 @@ export default {
 
 .catalog-item {
   color: #666261;
-  margin: 5px 0;
+  /*margin: 5px 0;*/
   line-height: 20px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  font-size: 13px;
+  font-size: 12px;
   padding: 2px 6px;
   display: -webkit-box;
   overflow: hidden;

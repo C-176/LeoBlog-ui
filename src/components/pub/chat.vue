@@ -25,14 +25,14 @@
                 @search="onSearch"
             />
 
-            <div v-for="(chat,index) in chats" :key="index"
+            <div v-for="(chat,index) in chats" :key="chat.user.userId"
                  :class="{select:isSelected[index],hovers:isHovered[index]}" class="user"
                  @click="select(index)"
                  @mouseleave="hover(-1)"
                  @mouseover="hover(index)">
               <div class="up">{{ this.$moments(chat.record.recordUpdateTime) }}</div>
               <div class="down">
-                <a-badge :count="redPoint[index]" size="small" style="float: left;">
+                <a-badge :count="redPoint[index]" size="small" style="float: left;line-height: 100%">
                   <user :user="chat.user">
                     <a-avatar :class="{online:chat.user.userStatus}"
                               :src="p(chat.user.userProfilePhoto)"
@@ -78,7 +78,7 @@
                 <template v-if="record.userId == $store.state.user.userId">
 
 
-                  <div id="myBox">
+                  <div id="myBox" :key="record.userId">
                     <user v-slot="slotP" :user-id="record.userId">
                       <a-avatar
                           :src="p(slotP.photo)"
@@ -106,7 +106,7 @@
 
                 </template>
                 <template v-else>
-                  <div id="yourBox">
+                  <div id="yourBox"  :key="record.userId">
                     <user v-slot="slotP" :user-id="record.userId">
                       <a-avatar
                           :src="p(slotP.photo)"
@@ -945,7 +945,7 @@ export default {
 .user .up {
   height: 20%;
   text-align: right;
-  font-size: 12px;
+  font-size: 10px;
   color: #0f6674;
   padding-right: 5px;
 

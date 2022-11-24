@@ -122,7 +122,7 @@
     </div>
 
     <div class="msg">
-      <a-tooltip>
+      <a-tooltip >
         <template #title>消息</template>
         <a-badge :count="$store.state.messagePoint">
           <a @click="$store.commit('changeMessageVisible',!$store.state.messageVisible)"><span
@@ -258,19 +258,24 @@ export default {
   top: 25px;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #869d9d;
+  background-color: #fdfdfd;
   height: 30px;
   border-radius: 30px;
-  line-height: 30px;
+  line-height: 26px;
+  border: 2px solid #8e9192;
+  /*border-top: 2px solid #8e9192;*/
+  /*border-bottom: 2px solid #8e9192;*/
+  /*border-right: 0px solid #8e9192;*/
+
 }
 
-.search:hover .searchInput {
+.searchInput {
   width: 200px;
-  padding: 0 6px;
+  padding: 0 10px;
 }
 
 .search:hover {
-  background-color: #869d9d;
+  /*background-color: #869d9d;*/
 }
 
 .searchInput {
@@ -282,10 +287,10 @@ export default {
   /* padding-left: 10px; */
   /* margin-left: 10px; */
   transition: .3s all ease;
-  line-height: 30px;
+  line-height: 26px;
   font-size: 14px;
-  color: #ffffff;
-  height: 30px;
+  /*color: #ffffff;*/
+  height: 26px;
 }
 
 .searchImg {
@@ -294,16 +299,16 @@ export default {
   color: #d8e3e7;
   float: right;
   /* padding-right: 10px; */
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
-  background-color: #ecf0f2;
+  background-color: #fdfdfd;
   display: flex;
   justify-content: center;
   align-items: center;
   transition: .2s;
   /* right: 10px; */
-  border: 2px solid #8e9192;
+  border: 0px solid #8e9192;
 }
 
 .searchImg span {
@@ -312,8 +317,10 @@ export default {
   font-weight: 600;
 }
 
-.searchImg span {
+
+.searchImg:hover {
   cursor: pointer;
+  background-color: #ecf0f3;
 }
 
 .header {

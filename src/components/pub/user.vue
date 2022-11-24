@@ -76,9 +76,9 @@ export default {
     talk() {
 
 
-      this.$axios.get(this.baseURL + '/chat/connect/' + this.$store.state.user.userId + '/' + this.user.userId).then(res => {
+      this.$axios.get(this.baseURL + '/chat/connect/' + this.$store.state.user.userId + '/' + this.userx.userId).then(res => {
         if (res.data.code === 200) {
-          this.$store.commit('changeAddChat', this.user.userId);
+          this.$store.commit('changeAddChat', this.userx.userId);
           this.$store.commit('changeChatVisible', true)
 
         } else {
@@ -111,7 +111,7 @@ export default {
         if (res.data.code === 200) {
           this.userx = res.data.data
         } else {
-          console.log(res.data.data, this.userId)
+          // console.log(res.data.data, this.userId)
           this.$st(res.data.data, "error")
         }
       })

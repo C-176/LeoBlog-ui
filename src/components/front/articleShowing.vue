@@ -553,8 +553,8 @@ export default {
   border-radius: 10px;
   box-shadow: 1px 3px 11px #134857;
 }
-:deep(p img:hover) {
-  cursor: pointer;
+:deep(.content img:hover) {
+  cursor: pointer !important;
 }
 :deep(pre) {
   background: #f4f4f4 !important;
