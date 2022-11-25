@@ -10,7 +10,7 @@
 <!--        首页-->
 <!--      </router-link>-->
 <!--    </a>-->
-    <a href="">
+    <a>
       <router-link to="/home/article"><span class="iconfont">&#xe610;</span>
         文章
       </router-link>
@@ -66,7 +66,7 @@
     </a-dropdown>
 
     <div @mouseleave="leave" class="search"
-         @mouseover="inputStyle.padding='0 6px';inputStyle.width='200px'">
+         @mouseover="inputStyle.padding='0 15px';inputStyle.width='200px'">
       <form action="javascript:void(0)">
 <!--        <input class="searchInput" :style="inputStyle"-->
 <!--               @input="inputStyle.padding='0 6px';inputStyle.width='200px'"-->
@@ -74,7 +74,7 @@
 <!--               @blur="inputStyle.padding='0';inputStyle.width='0'"-->
 <!--               type="text" autocomplete="off" placeholder="在此搜索..."-->
 <!--               v-model="key">-->
-        <input v-model="key" type="text" class="searchInput" autocomplete="off" placeholder="在此搜索..." style="padding: 0 6px; width: 200px" >
+        <input v-model="key" type="text" class="searchInput" autocomplete="off" placeholder="在此搜索..." style="padding: 0 15px; width: 200px" >
         <button class="searchImg"
                 @click="search">
           <span class="iconfont">&#xe644;</span>
@@ -122,14 +122,14 @@
     </div>
 
     <div class="msg">
-      <a-tooltip >
+      <a-tooltip placement="bottom">
         <template #title>消息</template>
         <a-badge :count="$store.state.messagePoint">
           <a @click="$store.commit('changeMessageVisible',!$store.state.messageVisible)"><span
               class="iconfont">&#xe607;</span></a>
         </a-badge>
       </a-tooltip>
-      <a-tooltip>
+      <a-tooltip placement="bottom">
         <template #title>私信</template>
         <a-badge :count="$store.state.chatPoint">
           <a @click="$store.commit('changeChatVisible',!$store.state.chatVisible)"><span

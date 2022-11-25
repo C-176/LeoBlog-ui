@@ -18,18 +18,27 @@
 
         <div class="chat">
           <div id="list">
-            <a-input-search
-                v-model:value="key"
+            <!--            <a-input-search-->
+            <!--                v-model:value="key"-->
+            <!--                placeholder="搜索用户"-->
+            <!--                style="width: 80%;padding:10px"-->
+            <!--                @search="onSearch"-->
+            <!--            />-->
+            <el-autocomplete
+                style="width: 80%;padding: 0 10px"
+                v-model="state"
+                :fetch-suggestions="querySearch"
+                clearable
+                class="inline-input w-50"
+                popper-class="my-autocomplete"
                 placeholder="搜索用户"
-                style="width: 80%;padding:10px"
-                @search="onSearch"
+                @select="handleSelect"
+                value-key="userNickname"
             />
 
             <div v-for="(chat,index) in chats" :key="chat.user.userId"
-                 :class="{select:isSelected[index],hovers:isHovered[index]}" class="user"
-                 @click="select(index)"
-                 @mouseleave="hover(-1)"
-                 @mouseover="hover(index)">
+                 :class="{select:isSelected[index]}" class="user"
+                 @click="select(index)">
               <div class="up">{{ this.$moments(chat.record.recordUpdateTime) }}</div>
               <div class="down">
                 <a-badge :count="redPoint[index]" size="small" style="float: left;line-height: 100%">
@@ -70,7 +79,13 @@
               <div class="address">{{ talkTo.user.userPos }}</div>
             </div>
 
-            <div id="chat" ref="chat" class="chatting">
+            <div id="chat" ref="chat" class="chatting" @wheel.once="scrollRecord">
+              <template v-if="showLoading">
+                <div class="loading" style="text-align: center;">
+                  <a-spin/>
+                </div>
+
+              </template>
               <template v-for="(record,index) in talkTo.record" :key="index">
                 <div v-if="timeDiff(index,index-1)" id="updateTime">
                   {{ this.$moments(record.recordUpdateTime) }}
@@ -106,7 +121,7 @@
 
                 </template>
                 <template v-else>
-                  <div id="yourBox"  :key="record.userId">
+                  <div id="yourBox" :key="record.userId">
                     <user v-slot="slotP" :user-id="record.userId">
                       <a-avatar
                           :src="p(slotP.photo)"
@@ -206,6 +221,12 @@ export default {
   },
   data() {
     return {
+      showLoading: false,
+      currentPage: 1,
+      pageSize: 50,
+      pages: 0,
+      loadingTime: new Date().getTime(),
+
       submitting: false,
       logoSrc: '',
       key: '',
@@ -252,7 +273,6 @@ export default {
       bigImgUrl: "",
       chatter: null,
       isSelected: [],
-      isHovered: [],
       redPoint: [],
       ws: null,
       message: '',
@@ -317,6 +337,7 @@ export default {
           'uploadVideo', '|',
         ]
       },
+      state: '',
     }
 
   },
@@ -338,36 +359,19 @@ export default {
 
 
     this.ws = this.connectSocket()
+    setTimeout(() => {
+      this.$refs.chat.addEventListener("scroll", this.scrollRecord)
+    }, 1000)
 
-    // window.addEventListener("paste", function (e) {
-    //   const clipdata = e.clipboardData || window.clipboardData;
-    //   // 转为base64
-    //   const items = clipdata.items;
-    //   for (let i = 0; i < 1; i++) {
-    //     if (items[i].type.indexOf("image") !== -1) {
-    //       const file = items[i].getAsFile();
-    //       const reader = new FileReader();
-    //       reader.onload = function (e) {
-    //         const base64 = e.target.result;
-    //         console.log(base64);
-    //         this.message = base64
-    //       };
-    //       reader.readAsDataURL(file);
-    //
-    //     }
-    //   }
-    //   // console.log("主动粘贴", clipdata.files[0]);
-    // });
   },
   watch: {
     talkTo: {
       handler() {
         this.$nextTick(() => {
-          this.$refs.chat.scrollTop = this.$refs.chat.scrollHeight
+          // this.$refs.chat.scrollTop = this.$refs.chat.scrollHeight
           this.$loading = false
           //给所有img标签添加点击事件
           let imgs = document.querySelectorAll('#chat #myMessage img, #chat #yourMessage img')
-          console.log('imgs', imgs)
           if (imgs.length != 0) {
             imgs.forEach((item) => {
               item.addEventListener('click', () => {
@@ -427,6 +431,32 @@ export default {
   },
 
   methods: {
+    querySearch(queryString, cb) {
+      let results = null;
+      if (this.state.trim() == '') {
+        // 返回chats中每个元素的user对象
+        let users = this.chats.map(item => item.user)
+        results = users
+      } else {
+        let users = this.chats.map(item => item.user)
+        results = users.filter((item) => {
+          return item.userNickname.indexOf(this.state.trim()) > -1
+        })
+        if (results.length == 0) {
+          results = {userNickname: '没有该用户'}
+        }
+      }
+
+      // 调用 callback 返回建议列表的数据
+      cb(results);
+    },
+
+
+    handleSelect(item) {
+      this.select(this.chats.findIndex(i => i.user.userNickname == item.userNickname))
+      this.state = ''
+    },
+
     handleFocus() {
       this.editor.focus()
     },
@@ -449,6 +479,12 @@ export default {
         }
       })
     },
+    scrollRecord() {
+      if (this.$refs.chat.scrollTop == 0) {
+        this.loadingRecord()
+      }
+    },
+
 
     getUsers() {
       this.$axios.get(this.baseURL + '/chat/list/' + this.$store.state.user.userId).then(res => {
@@ -529,7 +565,43 @@ export default {
       }
     }
     ,
+    loadingRecord() {
+      if (new Date().getTime() - this.loadingTime < 3000) {
+        return
+      }
+
+      this.currentPage++;
+      if (this.currentPage <= this.pages) {
+        this.showLoading = true
+        //更新聊天记录
+        this.$axios.get(this.baseURL + '/chat/record/list/' + this.$store.state.user.userId + '/' + this.talkTo.user.userId + '/' + this.currentPage + '/' + this.pageSize).then(res => {
+          if (res.data.code === 200) {
+            this.currentPage = res.data.data.current;
+            this.pages = res.data.data.pages;
+            const record = res.data.data.records;
+            record.forEach(record => {
+              record.recordContent = this.replaceURL(record.recordContent)
+            })
+            this.talkTo.record = record.concat(this.talkTo.record)
+          } else {
+            this.$st(res.data.data, "error")
+          }
+        })
+        this.loadingTime = new Date().getTime()
+        this.$nextTick(() => {
+          setTimeout(() => {
+            this.$refs.chat.scrollTop = 10
+            this.showLoading = false
+          }, 500)
+        })
+      }
+
+
+      this.editor.focus()
+
+    },
     select(index) {
+
       this.talkTo.user = this.chats[index].user
       let isSelected = []
       for (let i = 0; i < this.chats.length; i++) {
@@ -545,7 +617,9 @@ export default {
       //更新聊天记录
       this.$axios.get(this.baseURL + '/chat/connect/' + this.$store.state.user.userId + '/' + this.talkTo.user.userId).then(res => {
         if (res.data.code === 200) {
-          this.talkTo.record = res.data.data;
+          this.currentPage = res.data.data.current;
+          this.pages = res.data.data.pages;
+          this.talkTo.record = res.data.data.records;
           this.talkTo.record.forEach(record => {
             record.recordContent = this.replaceURL(record.recordContent)
           })
@@ -557,21 +631,7 @@ export default {
       this.editor.focus()
     }
     ,
-    hover(index) {
-      if (index === -1) {
-        this.isHovered = new Array(this.chats.length).fill(false)
-      }
-      let isHovered = []
-      for (let i = 0; i < this.chats.length; i++) {
-        if (i === index) {
-          isHovered.push(true)
-        } else {
-          isHovered.push(false)
-        }
-      }
-      this.isHovered = isHovered
 
-    },
     timeDiff(index1, index2) {
       if (index1 === 0) {
         return true
@@ -655,12 +715,12 @@ export default {
       // }
       if (this.ws.readyState !== 1) {
         this.ws = this.connectSocket()
-        if (this.ws.readyState !== 1) {
-          // 刷新
-          this.$st("连接已断开，请刷新重连", 'error')
+        this.$nextTick(() => {
+          this.sendMessage()
           return
-        }
+        })
       }
+
       try {
         this.ws.send(JSON.stringify(data))
       } catch (e) {
@@ -798,6 +858,9 @@ export default {
       }
       // console.log(src)
       return src
+    },
+    clearPageInfo() {
+      this.currentPage = 1
     }
     ,
     onOpen() {
@@ -825,8 +888,8 @@ export default {
 
 
     }
+  }
 
-  },
 }
 
 
@@ -937,8 +1000,7 @@ export default {
 
 .user:hover {
   cursor: pointer;
-
-
+  border: 2px solid #838ea4;
 }
 
 
@@ -1037,6 +1099,10 @@ export default {
   font-weight: 600;
 }
 
+:deep(.my-autocomplete){
+  font-size: 12px !important;
+}
+
 .userIntro .address {
 
 }
@@ -1084,6 +1150,7 @@ export default {
 
   /*margin-top: 10px;*/
 }
+
 :deep(p img:hover) {
   cursor: pointer !important;
 }
@@ -1122,7 +1189,7 @@ export default {
 }
 
 
-.select, .hovers {
+.select {
   /*width: 80%;*/
   /*height: 12%;*/
   border: 2px solid #838ea4;

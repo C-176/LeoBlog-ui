@@ -19,7 +19,11 @@
 
       </el-empty>
       <template v-else>
+<!--        <el-empty v-if="this.currentPage==1">-->
+<!--        <a-button style="position: absolute;bottom: 10px;left: calc(50%)" shape="round" @click="getMessages">点击加载更多</a-button>-->
+
         <a-list :data-source="messages" class="messageBox" item-layout="horizontal">
+
           <template #renderItem="{ item }">
             <a-list-item>
               <a-list-item-meta>
@@ -65,14 +69,17 @@ export default {
   },
   data() {
     return {
+      currentPage: 0,
+      pages: 1,
+      pageSize: 10,
       logoSrc: '',
       messages: [
-        {
-          userId: 1,
-          messageTitle: '消息标题',
-          messageContent: '消息内容',
-          messageUpdateTime: '2021-01-01 00:00:00'
-        }
+        // {
+        //   userId: 1,
+        //   messageTitle: '消息标题',
+        //   messageContent: '消息内容',
+        //   messageUpdateTime: '2021-01-01 00:00:00'
+        // }
       ],
 
     }
@@ -83,9 +90,15 @@ export default {
   },
   methods: {
     getMessages() {
-      this.$axios.get('/message/user/' + this.$store.state.user.userId).then(res => {
+      this.currentPage++;
+      if(this.currentPage>this.pages){
+        this.$st.info('没有更多消息了')
+      }
+      this.$axios.get('/message/user/' + this.$store.state.user.userId + '/' + this.currentPage + '/' + this.pageSize).then(res => {
         if (res.data.code === 200) {
-          this.messages = res.data.data
+          this.currentPage = res.data.data.current;
+          this.pages = res.data.data.pages;
+          this.messages = this.messages.concat(res.data.data.records);
         } else {
           this.$st(res.data.data, 'error')
         }

@@ -63,6 +63,7 @@ app.config.globalProperties.$st = (title, icon) => {
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
+        width: 300,
         showConfirmButton: false,
         timer: 2000
     })
@@ -87,7 +88,8 @@ app.config.globalProperties.p = (pic) => {
     if (pic) {
         return pic.startsWith('http') ? pic : app.config.globalProperties.baseURL + pic
     } else {
-        return IMG_SRC
+        return ''
+        // return IMG_SRC
     }
 }
 

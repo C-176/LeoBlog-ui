@@ -210,13 +210,13 @@ export default {
 
 <style scoped>
 .catalog-card {
-  background: #fdfdfd;
-  border-radius: 5px;
+  /*background: #fdfdfd;*/
+  border-radius: 2px;
   /*box-shadow: 0 3px 8px 6px rgba(7, 17, 27, 0.05);*/
   padding: 0 24px;
   width: 14%;
   position: fixed;
-  top: 80px;
+  top: 100px;
   left: 2%;
   box-sizing: border-box;
   text-align: left;
@@ -260,7 +260,7 @@ export default {
   /*margin: 5px 0;*/
   line-height: 20px;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  /*transition: all 0.2s ease-in-out;*/
   font-size: 12px;
   padding: 2px 6px;
   display: -webkit-box;
@@ -272,14 +272,14 @@ export default {
 }
 
 .active {
-  background-color: #ecf0f3;
+  background-color: #fdfdfd;
   color: #111111;
-  border-radius: 5px;
+  border-radius: 3px;
 }
 
 .not-active:hover, .active:hover {
-  background-color: #ecf0f3;
+  background-color: #fdfdfd;
   color: #111111;
-  border-radius: 5px;
+  border-radius: 3px;
 }
 </style>
