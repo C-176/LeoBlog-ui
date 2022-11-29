@@ -1,5 +1,5 @@
 <template>
-  <div class="whole">
+  <div class="w-full  bg-white  text-left">
     <template v-if="loading">
       <a-skeleton active/>
       <a-skeleton active/>
@@ -15,7 +15,7 @@
       <a-list v-else :data-source="comments" item-layout="vertical" size="small">
         <template #renderItem="{item}">
           <template v-if="item.articleTitle.trim() != ''">
-            <a style="font-size: 16px;margin:10px 0 ; display: block" @click="$router.push('/article/'+item.articleId)"><span
+            <a class="text-base my-2 block" @click="$router.push('/article/'+item.articleId)"><span
                 v-html="item.articleTitle"></span></a>
           </template>
           <a-list-item :key="item.commentId" :extra="item.commentUpdateTime">
@@ -50,7 +50,7 @@
 
           <a-list v-for=" i in item.value" item-layout="vertical" size="small">
 
-            <a-list-item :key="i.commentId" :extra="i.commentUpdateTime" style="padding-left: 40px">
+            <a-list-item :key="i.commentId"  class="ml-10">
               <template #actions>
                   <span>
                     <component is="LikeOutlined" style="margin-right: 0px"/>
@@ -83,21 +83,45 @@
         </template>
 
       </a-list>
-      <template v-if="showComment">
-        <el-affix :offset="20" position="bottom" target=".whole">
-          <textarea v-model="commentIn" class="commentIn" placeholder="请输入内容"
-                    @keyup.enter="saveComment()">
-          </textarea>
-          <a-button id="enter" :loading="submitting" ghost shape="round" size="small"
-                    type="primary" @click="saveComment()">
-            <!--            <template #icon>-->
-            <enter-outlined/>
-            发送
-            <!--            </template>-->
-          </a-button>
+      <!--      <template v-if="showComment">-->
+      <!--        <el-affix :offset="20" position="bottom">-->
+      <!--          <textarea v-model="commentIn" class="commentIn" placeholder="请输入内容"-->
+      <!--                    @keyup.enter="saveComment()">-->
+      <!--          </textarea>-->
+      <!--          <a-button id="enter" :loading="submitting" ghost shape="round" size="small"-->
+      <!--                    type="primary" @click="saveComment()">-->
+      <!--            &lt;!&ndash;            <template #icon>&ndash;&gt;-->
+      <!--            <enter-outlined/>-->
+      <!--            发送-->
+      <!--            &lt;!&ndash;            </template>&ndash;&gt;-->
+      <!--          </a-button>-->
 
+      <!--        </el-affix>-->
+      <!--      </template>-->
+
+      <div v-if="showComment" class="relative w-full h-28 text-right">
+        <el-affix :offset="5" class="h-full" position="bottom">
+                    <textarea v-model="commentIn"
+                              class="bg-white border-2 border-gray-200 w-full h-full rounded-xl resize-none outline-0 p-2"
+                              placeholder="请输入内容... | Enter键发送"
+                              @keyup.enter="saveComment()">
+                    </textarea>
+          <a-button :loading="submitting" class="absolute  hover:text-black right-2 -top-8  text-gray-400"
+                    shape="round" size="small"
+                    @click="saveComment()">
+            <enter-outlined/>
+<!--            发送-->
+          </a-button>
+          <a-button :loading="submitting" class="absolute   hover:text-black right-0.5 -top-8  text-gray-400"
+                    shape="round" size="small"
+                    @click="showComment =false">
+            <close-outlined/>
+
+          </a-button>
         </el-affix>
-      </template>
+      </div>
+
+
     </template>
 
 
@@ -105,7 +129,7 @@
 </template>
 
 <script>
-import {DeleteOutlined, EnterOutlined, LikeOutlined, MessageOutlined} from "@ant-design/icons-vue";
+import {DeleteOutlined,CloseOutlined, EnterOutlined, LikeOutlined, MessageOutlined} from "@ant-design/icons-vue";
 import user from "@/components/pub/user";
 
 export default {
@@ -116,7 +140,11 @@ export default {
     MessageOutlined,
     DeleteOutlined,
     EnterOutlined,
-    user
+    user,
+    CloseOutlined
+
+
+
   },
   data() {
     return {
@@ -219,24 +247,14 @@ export default {
   background: rgba(124, 146, 156, 0.68);
 }
 
-:deep(.ant-list-vertical .ant-list-item-meta-title){
+:deep(.ant-list-vertical .ant-list-item-meta-title) {
   font-size: 14px;
 }
-:deep(.ant-list-vertical .ant-list-item-extra){
+
+:deep(.ant-list-vertical .ant-list-item-extra) {
   color: #8b8b8b;
 }
 
-.commentIn {
-
-  background-color: #fff;
-  border: 2px solid #ecf0f2;
-  width: 100%;
-  height: 100px;
-  border-radius: 10px;
-  resize: none;
-  outline: none;
-  padding: 10px;
-}
 
 span:hover {
   cursor: pointer;
@@ -244,15 +262,5 @@ span:hover {
   transition: all 0.3s;
 }
 
-
-.whole {
-  width: 65%;
-  margin-left: calc(17.5%);
-  text-align: left;
-  background-color: #fff;
-  /*margin-top: 60px;*/
-
-  margin-bottom: 10px;
-}
 
 </style>

@@ -75,7 +75,7 @@ export default {
 
 img {
   width: 100vw;
-  height: calc(100vh - 50px);
-  background-size: 100% 100%;
+  /*height: calc(100vh - 50px);*/
+  /*background-size: 100% 100%;*/
 }
 </style>

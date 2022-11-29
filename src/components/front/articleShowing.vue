@@ -1,97 +1,102 @@
 <template>
   <bread>文章</bread>
-  <div class="whole" style="margin-top: 60px">
-    <template v-if="loading">
-      <a-skeleton active/>
-      <a-skeleton active/>
-      <a-skeleton active/>
-    </template>
+  <div class="mx-auto w-screen md:w-2/3 bg-white md:mt-20 p-5 mb-2">
 
-    <template v-else>
-
-      <img v-if="article.articlePic!=''&&article.articlePic!=null" class="picture" alt="picture"
-           :src="p(article.articlePic)"/>
-
-      <div class="title"><span class="iconfont" v-html="article.articleTitle"></span></div>
-      <div class="labels">
-        <div style="  text-align: left;">
-          <Tag :color="getColor()" v-for="label in article.labels" :key="label.labelId">
-            {{ label.labelName }}
-          </Tag>
-        </div>
-      </div>
-      <div class="author">
-        <user :user="article.user">
-          <!--          <img class="left" :src="p(article.user.userProfilePhoto)"/>-->
-          <a-avatar
-              :src="p(article.user.userProfilePhoto)"
-              :style="{ backgroundColor: '#067061'  ,verticalAlign: 'middle'}"
-              class="left"
-              shape="circle"
-              size="middle"
-          >
-            {{ article.user.userNickname }}
-          </a-avatar>
-        </user>
-        <div class="right">
-          <div class="name">{{ article.user.userNickname }}</div>
-          <div class="detail">{{ article.user.userCertification }}</div>
-        </div>
-      </div>
-
-      <div class="content" ref="articleContent">
-        <span v-html="article.articleContent"></span>
-      </div>
-
-      <div class="updateTime"><span class="iconfont">&#xe6fb;</span>最后更新时间: {{ article.articleUpdateDate }}
-      </div>
-      <a-divider style="height: 1px"/>
-      <!--      <el-affix position="bottom" target=".content" :offset="10">-->
-
-      <template v-if="article.isArticle === 1">
-        <div class="toolbar">
-          <a class="like" @click="like(article.articleId)">点赞<span
-              class="iconfont">&#xe605;</span>{{ article.articleLikes }} </a>
-          <a class="reply" @click="comment()">评论<span
-              class="iconfont">&#xe646;</span>{{ article.articleComments }} </a>
-          <a class="collect" @click="collect(article.articleId)">收藏<span
-              class="iconfont">&#xe8b9;</span>{{ article.articleCollects }} </a>
-          <a class="share" @click="share(article.articleId)">分享<span class="iconfont">&#xe73a;</span>
-          </a>
-        </div>
+    <div>
+      <template v-if="loading">
+        <a-skeleton active/>
+        <a-skeleton active/>
+        <a-skeleton active/>
       </template>
-      <!--      </el-affix>-->
-      <transition name="fade">
-        <div v-if="showComment">
-            <textarea v-model="commentIn" class="commentIn" placeholder="请输入内容... | Enter键发送"
+
+      <template v-else>
+
+        <img v-if="article.articlePic!=''&&article.articlePic!=null" class="picture mx-auto"
+             :src="p(article.articlePic)"/>
+
+        <div class="text-xl text-left h-10 w-full font-bold mt-1">{{
+            article.articleTitle.replaceAll('<p>','').replaceAll('</p>','')}}
+        </div>
+        <div class="labels">
+          <div class="text-left">
+            <Tag :color="getColor()" v-for="label in article.labels" :key="label.labelId">
+              {{ label.labelName }}
+            </Tag>
+          </div>
+        </div>
+        <div class="author">
+          <user :user="article.user">
+            <!--          <img class="left" :src="p(article.user.userProfilePhoto)"/>-->
+            <a-avatar
+                :src="p(article.user.userProfilePhoto)"
+                :style="{ backgroundColor: '#067061'  ,verticalAlign: 'middle'}"
+                class="left"
+                shape="circle"
+                size="middle"
+            >
+              {{ article.user.userNickname }}
+            </a-avatar>
+          </user>
+          <div class="right">
+            <div class="name">{{ article.user.userNickname }}</div>
+            <div class="detail">{{ article.user.userCertification }}</div>
+          </div>
+        </div>
+
+        <div class="content" ref="articleContent">
+          <span v-html="article.articleContent"></span>
+        </div>
+
+        <div class="updateTime"><span class="iconfont">&#xe6fb;</span>最后更新时间: {{ article.articleUpdateDate }}
+        </div>
+        <a-divider style="height: 1px"/>
+        <!--      <el-affix position="bottom" target=".content" :offset="10">-->
+
+        <template v-if="article.isArticle === 1">
+          <div class="w-full flex justify-around items-center">
+            <a class="tools" @click="like(article.articleId)">点赞<span
+                class="iconfont">&#xe605;</span>{{ article.articleLikes }} </a>
+            <a class="tools" @click="comment()">评论<span
+                class="iconfont">&#xe646;</span>{{ article.articleComments }} </a>
+            <a class="tools" @click="collect(article.articleId)">收藏<span
+                class="iconfont">&#xe8b9;</span>{{ article.articleCollects }} </a>
+            <a class="tools" @click="share(article.articleId)">分享<span class="iconfont">&#xe73a;</span>
+            </a>
+          </div>
+        </template>
+        <!--      </el-affix>-->
+        <transition name="fade">
+          <div v-if="showComment " class="relative w-full h-28 text-right">
+            <textarea v-model="commentIn" class="bg-white border-2 border-gray-200 w-full h-full rounded-xl resize-none outline-0 p-2" placeholder="请输入内容... | Enter键发送"
                       @keyup.enter="saveComment(-1)">
             </textarea>
-          <a-button id="enter" ghost shape="round" size="small" type="primary"
-                    @click="saveComment(-1,article.user.userId)">
-            <!--              <template #icon>-->
-            <!--                <enter-outlined/>发送-->
-            <!--              </template>-->
-          </a-button>
-        </div>
+            <a-button  class="absolute hover:text-black right-5 -top-10  text-gray-400"   shape="round" size="small"
+                      @click="saveComment(-1,article.user.userId)">
+              <!--              <template #icon>-->
+                              <enter-outlined/>发送
+              <!--              </template>-->
+            </a-button>
+          </div>
 
-      </transition>
+        </transition>
 
 
-    </template>
+      </template>
 
+    </div>
+
+    <comment-template  id="comment" v-if="article.isArticle === 1"
+                      :comments="comments" :method="getComments">
+
+    </comment-template>
+
+    <!--  显示放大图片的组件-->
+    <big-img :visible="photoVisible" :url="bigImgUrl" @closeClick="()=>{photoVisible=false}"></big-img>
+
+
+    <a-back-top/>
+    <catlog :container="container"></catlog>
   </div>
-
-  <comment-template v-if="article.isArticle === 1"
-                    :comments="comments" :method="getComments">
-
-  </comment-template>
-
-<!--  显示放大图片的组件-->
-  <big-img :visible="photoVisible" :url="bigImgUrl" @closeClick="()=>{photoVisible=false}"></big-img>
-
-
-  <a-back-top/>
-  <catlog :container="container"></catlog>
 
 </template>
 
@@ -103,11 +108,12 @@ import {EnterOutlined} from '@ant-design/icons-vue';
 import user from "@/components/pub/user";
 import bigImg from "@/components/pub/bigImg";
 import catlog from "@/components/pub/catlog";
+import '@wangeditor/editor/dist/css/style.css' // 引入 css
 
 
 export default {
   name: 'forward-article',
-  components: {h, commentTemplate, Divider, Tag, EnterOutlined, user,bigImg,catlog},
+  components: {h, commentTemplate, Divider, Tag, EnterOutlined, user, bigImg, catlog},
   data() {
     return {
       container: '#xxxxxxxxxxxx',
@@ -204,62 +210,32 @@ export default {
 
   },
 
-  mounted(){
+  mounted() {
     //给所有图片添加点击事件
     let imgs = document.querySelectorAll('.content img')
-    if(imgs.length == 0){
-      setTimeout(()=>{
+    if (imgs.length == 0) {
+      setTimeout(() => {
         imgs = document.querySelectorAll('.content img')
-        imgs.forEach((item)=>{
-          item.addEventListener('click',()=>{
+        imgs.forEach((item) => {
+          item.addEventListener('click', () => {
             this.photoVisible = true
             this.bigImgUrl = item.src
           })
         })
-      },1000)
-    }else{
-      imgs.forEach((item)=>{
-        item.addEventListener('click',()=>{
+      }, 1000)
+    } else {
+      imgs.forEach((item) => {
+        item.addEventListener('click', () => {
           this.photoVisible = true
           this.bigImgUrl = item.src
         })
       })
     }
-    this.addAchor()
 
 
   }
   ,
   methods: {
-    // showBigImage(e) {//点击图片函数，点击后，把photoVisible设置成true
-    //   if (e != "") {
-    //     this.photoVisible = true;
-    //     this.bigImgUrl = e.currentTarget.src;
-    //   }},
-    addAchor(){
-      // //给.content下的所有h标签添加锚点
-      // let h = document.querySelectorAll('.content h1,.content h2,.content h3,.content h4,.content h5,.content h6')
-      // if(h.length == 0){
-      //   setTimeout(()=>{
-      //     h.forEach((item)=>{
-      //       item.id = item.innerText
-      //     })
-      //   },1000)
-      // }else{
-      //   h.forEach((item)=>{
-      //     item.id = item.innerText
-      //   })
-      // }
-      //将h标签的内容添加到目录中
-
-
-
-
-
-
-    },
-
-
     getColor() {
       return this.colors[Math.floor(Math.random() * this.colors.length)]
     },
@@ -381,7 +357,6 @@ export default {
     article() {
       this.$nextTick(() => {
         this.loading = false
-        this.addAchor()
         this.container = '.content'
 
 
@@ -394,38 +369,6 @@ export default {
 
 <style scoped>
 
-#enter {
-  color: #7c929c;
-  border-color: #7c929c;
-  position: absolute;
-  margin-left: -100px;
-  margin-top: calc(4%);
-}
-
-#enter:hover {
-  background: rgba(124, 146, 156, 0.68);
-}
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .3s;
-}
-
-.fade-enter-from, .fade-leave-to {
-  opacity: 0;
-}
-
-.commentIn {
-
-  background-color: #fff;
-  border: 2px solid #ecf0f2;
-  width: 100%;
-  height: 100px;
-  border-radius: 10px;
-  resize: none;
-  outline: none;
-  padding: 10px;
-}
-
 .picture {
   height: calc(60%);
   /*height: calc(50%);*/
@@ -433,53 +376,6 @@ export default {
   overflow: hidden;
   border-radius: 10px;
   /*box-shadow: 1px 3px 11px #134857;*/
-}
-
-.toolbar {
-  width: 100%;
-  height: 30px;
-  text-align: center;
-
-
-}
-
-.toolbar a {
-  font-size: 13px;
-  background: #fff;
-  color: #8590a6;
-  float: left;
-  display: block;
-  width: 25%;
-  height: 100%;
-  line-height: 30px;
-  margin-top: 10px;
-  border-radius: 5px;
-}
-
-.toolbar a:hover {
-  background-color: #edf3f4;
-  transition: all 0.3s;
-
-}
-
-.whole {
-  background: #fff;
-  float: left;
-  width: 65%;
-  margin-left: calc(17.5%);
-  border-radius: 5px;
-  padding: 10px;
-  /*margin-top: 60px;*/
-
-}
-
-
-.title {
-  /*height: 60px;*/
-  line-height: 60px;
-  font-size: 22px;
-  font-weight: 600;
-  text-align: left;
 }
 
 .author {
@@ -546,6 +442,7 @@ export default {
   /*height: 100%;*/
   border-radius: 10px;
 }
+
 :deep(p img,p video) {
   width: 80% !important;
   margin-left: 10% !important;
@@ -553,12 +450,22 @@ export default {
   border-radius: 10px;
   box-shadow: 1px 3px 11px #134857;
 }
+
 :deep(.content img:hover) {
   cursor: pointer !important;
 }
+
 :deep(pre) {
   background: #f4f4f4 !important;
   border-radius: 5px !important;
   padding: 10px !important;
+}
+
+:deep(.content ol) {
+  padding-left: 4% !important;
+}
+
+:deep(.content ul) {
+  padding-left: 4% !important;
 }
 </style>

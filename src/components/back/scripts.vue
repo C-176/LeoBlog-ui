@@ -234,9 +234,9 @@ export default {
 }
 
 .whole {
-  margin-left: calc(17.5%);
+  margin-left: calc(22.5%);
   background: #fff;
-  width: 65%;
+  width: 55%;
   border-radius: 5px;
   margin-top: 60px;
   padding: 10px;

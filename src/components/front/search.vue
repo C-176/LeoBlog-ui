@@ -157,7 +157,7 @@ export default {
 .wholeDiv {
   margin: 60px 0 20px calc(17.5%);
   /*水平居中*/
-  width: 65%;
+  width: 55%;
   float: none;
   background-color: #fff;
   padding-bottom: 10px;

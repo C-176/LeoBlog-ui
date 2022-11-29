@@ -1,5 +1,5 @@
 <template>
-  <div class="catalog-card">
+  <div class="catalog-card invisible md:visible" v-if="titles.length>0">
     <div class="catalog-card-header">
       <div>
         <!--                <span-->
@@ -16,7 +16,7 @@
       <div
           v-for="title in titles"
           :key="title.id"
-          @click="scrollToView(title.scrollTop)"
+          @click="scrollToView(title.scrollTop+180)"
           :class="[
                     'catalog-item',
                     currentTitle.id == title.id ? 'active' : 'not-active',
@@ -39,7 +39,7 @@ export default {
     return {
       titles: [],
       currentTitle: {},
-      progress: 0,
+      progress: 0+ "%",
       scrollTop: 0,
       scrollHeight: 0,
       clientHeight: 0,
@@ -64,7 +64,8 @@ export default {
     handleScroll() {
       this.progress =
           parseInt(
-              (window.scrollY / document.documentElement.scrollHeight) *
+              // (window.scrollY / document.documentElement.scrollHeight) *
+              (window.scrollY /( document.documentElement.scrollHeight-document.documentElement.clientHeight)) *
               100
           ) + "%";
 
@@ -106,7 +107,7 @@ export default {
     getTitles() {
 
       let titles = [];
-      let levels = ["h1", "h2", "h3"];
+      let levels = ["h1", "h2", "h3", "h4"];
 
 
       let articleElement = document.querySelector(this.container);

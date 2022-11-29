@@ -19,9 +19,9 @@ export default {
 <style scoped>
 
 .whole {
-  margin-left: calc(17.5%);
+  margin-left: calc(22.5%);
   margin-top: 60px;
-  width: 65%;
+  width: 55%;
   height: 100%;
   text-align: left;
   background-color: #fff;

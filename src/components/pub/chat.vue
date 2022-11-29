@@ -71,10 +71,11 @@
           <div v-loading="$loading" class="chatMessage">
             <div class="userIntro">
               <div class="uname">
-                <router-link :to="'/user/'+talkTo.user.userId"> {{
-                    talkTo.user.userNickname
-                  }}
-                </router-link>
+<!--                <router-link :to="'/user/'+talkTo.user.userId"> {{-->
+<!--                    talkTo.user.userNickname-->
+<!--                  }}-->
+                {{talkTo.user.userNickname}}
+<!--                </router-link>-->
               </div>
               <div class="address">{{ talkTo.user.userPos }}</div>
             </div>
@@ -603,6 +604,7 @@ export default {
     select(index) {
 
       this.talkTo.user = this.chats[index].user
+
       let isSelected = []
       for (let i = 0; i < this.chats.length; i++) {
         if (this.chats[i].user.userId === this.talkTo.user.userId) {
@@ -613,7 +615,6 @@ export default {
       }
       this.isSelected = isSelected
       this.redPoint[index] = 0
-      this.talkTo.user = this.chats[index].user
       //更新聊天记录
       this.$axios.get(this.baseURL + '/chat/connect/' + this.$store.state.user.userId + '/' + this.talkTo.user.userId).then(res => {
         if (res.data.code === 200) {
@@ -629,6 +630,7 @@ export default {
         }
       })
       this.editor.focus()
+      console.log(this.talkTo.user.userNickname)
     }
     ,
 
@@ -949,7 +951,7 @@ export default {
 }
 
 .logo::before {
-  display: inline-block;
+  /*display: inline-block;*/
   content: "";
   height: 100%;
   vertical-align: middle;
@@ -1074,9 +1076,15 @@ export default {
 
 }
 
-:deep(p img,p video) {
+:deep(p img) {
   width: 100% !important;
+  border-radius: 5px;
 }
+:deep(.chatting video){
+  width: 100% !important;
+  border-radius: 5px;
+}
+
 
 
 .chatMessage .userIntro {

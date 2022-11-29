@@ -212,6 +212,7 @@ export default {
           this.$st("发布成功", 'success')
           this.$store.commit('changeValueTitle', '');
           this.$store.commit('changeValueContent', '');
+
           this.$router.replace({path: '/article/' + res.data.data})
         } else {
           this.$st("发布失败", 'error')
@@ -267,18 +268,16 @@ export default {
 }
 
 .whole {
-  margin-left: calc(17.5%);
+  margin-left: calc(22.5%);
   margin-top: 60px;
-  width: 65%;
+  width: 55%;
   text-align: left;
   background-color: #fff;
   padding: 10px;
   padding-top: 80px;
 }
 
-.labels {
 
-}
 
 .cover {
   /*margin-top: 20px;*/

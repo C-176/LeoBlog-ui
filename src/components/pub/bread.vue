@@ -1,5 +1,5 @@
 <template>
-  <el-breadcrumb separator="|" style="position: fixed;top: 60px;left: 60px;">
+  <el-breadcrumb separator="|" class="fixed inset-3 md:m-12 max-w-10 max-h-2">
     <el-breadcrumb-item :to="{ path: '/home/index' }">首页</el-breadcrumb-item>
     <el-breadcrumb-item><slot></slot></el-breadcrumb-item>
   </el-breadcrumb>

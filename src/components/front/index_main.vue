@@ -1,9 +1,15 @@
 <template>
-  <div ref="show" @wheel="scrollBottom">
-    <scroll-pics></scroll-pics>
-    <article-show :article-list="articleList"></article-show>
-    <right-self></right-self>
-    <copy-right></copy-right>
+  <div ref="show" class="w-full  md:mt-20 md:flex justify-center items-start  " @wheel="scrollBottom">
+
+    <div class="w-full md:w-3/5 my-2 mx-2 md:my-0 float-left ">
+      <scroll-pics></scroll-pics>
+      <article-show :article-list="articleList"></article-show>
+    </div>
+    <div class="w-1/6  float-left invisible md:visible">
+      <right-self></right-self>
+      <copy-right></copy-right>
+    </div>
+
   </div>
 
   <a-back-top/>
@@ -77,7 +83,14 @@ export default {
       //获取articleList,一次获取20条
       this.$axios.get('/article/list/' + this.currentPage + '/' + this.pageSize).then((res) => {
         let map = res.data.data
-        this.articleList = this.articleList.concat(map.records)
+        let articleList = map.records
+        articleList.forEach(x=>{
+          x.author={
+            userNickname:'admin',
+            userProfilePhoto:'https://gitee.com/zhengyongjie/blog/raw/master/src/assets/img/author.jpg'
+          }
+        })
+        this.articleList = this.articleList.concat(articleList)
         // this.$nextTick(() => {
         //   this.max = document.documentElement.scrollHeight
         //   this.value = document.documentElement.scrollTop || document.body.scrollTop;
@@ -141,7 +154,7 @@ export default {
 /*}*/
 
 :deep(.whole) {
-  margin-left: calc(7.5% + 3px) !important;
+  margin-left: calc(14%) !important;
 }
 
 /*::-webkit-scrollbar {*/

@@ -1,13 +1,13 @@
 <template>
 
-  <div class="whole">
+  <div class="hidden md:flex w-full bg-white p-1 rounded-xl">
 
     <!--      头部滚动图-->
-    <div class="a" @mouseleave="leave">
+    <div class="flex justify-center items-center  w-full" @mouseleave="leave">
       <transition name="fade">
-        <div v-if="show" class="bCover">
+        <div v-if="show" class="w-4/5 h-full">
           <el-image
-              class="b"
+              class="rounded-xl h-full"
               :src="mainPic"
               :initial-index="index"
               style="z-index: 1"
@@ -19,9 +19,9 @@
           />
         </div>
       </transition>
-      <div class="c">
-        <div v-for="i in [0,1,2,3,4]" class="d" @mouseover="over(i)" :class="{dd:isSelected[i]}">
-          <img :src="picUrl[i]" alt="pic">
+      <div class="flex-col justify-evenly h-full items-center w-1/6">
+        <div v-for="i in [0,1,2,3,4]" class="relative  hover:cursor-pointer   scale-90 transition-all duration-200  " @mouseover="over(i)" :class="{dd:isSelected[i]}">
+          <img class="rounded-xl" :src="picUrl[i]" alt="pic">
         </div>
       </div>
     </div>
@@ -153,84 +153,9 @@ export default {
   opacity: 0;
 }
 
-.whole {
-  background: #fff;
-  width: 65%;
-  margin-left: 60px;
-  border-radius: 5px;
-  margin-top: 60px;
-  padding: 10px 0;
-}
-
-.whole > div {
-  width: 100%;
-}
-
-.a {
-  position: relative;
-  width: 100%;
-  display: flex;
-  justify-content: space-evenly;
-}
-
-.bCover {
-  width: 82.5%;
-  /*高度为宽度的0.6倍*/
-  /*height: 49.2%;*/
-  z-index: 1;
-}
-
-.b {
-  width: 100%;
-  height: 100%;
-  transition: all .5s;
-  background-size: cover;
-  border-radius: 5px;
-  /*  margin-left: 10px;*/
-  margin-right: 10px;
-  /*box-shadow: 1px 3px 11px #134857;*/
-
-}
-
-.c {
-  width: 16%;
-  /*height: 100%;*/
-  display: flex;
-  /* 纵向布局 */
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.d {
-  position: relative;
-  width: 100%;
-  /*height: 47%;*/
-  right: 0;
-  transition: .5s;
-  overflow: hidden;
-  border-radius: 5px;
-}
-
-.d img {
-  /*position: absolute;*/
-  width: 100%;
-  height: 100%;
-  border-radius: 5px;
-  /* 小图片上移 */
-  /*transform: translate(0, -50px);*/
-  transition: .5s;
-  /*right: 0;*/
-  /*height: 100%;*/
-}
-
-.d.dd {
+.dd{
   opacity: 0;
-  right: 250px;
-}
-
-.d:hover img {
-  opacity: 0;
-  right: 250px;
+  /*right: 250px;*/
 }
 
 </style>

@@ -1,7 +1,17 @@
 <template>
-  <div v-show="visible" @click="closeClick" class="showPhoto">
-    <img class="img" :src="url" alt="图片加载失败" />
+
+  <div class="showPhoto" v-show="visible">
+    <el-image
+        class="img"
+        :src="url"
+        fit="cover"
+        @close="closeClick"
+        :preview-src-list="[url]"
+        hide-on-click-modal
+        close-on-press-escape
+    />
   </div>
+
 </template>
 
 <script>
@@ -23,6 +33,22 @@ export default {
       this.$emit("closeClick");
     },
   },
+  watch:{
+    visible(val){
+      if(val){
+        // 点击img
+        this.$nextTick(()=>{
+          var img = document.getElementsByClassName('el-image__preview')[0];
+          img.click();
+          img.style.height=0;
+
+        })
+
+
+
+      }
+    }
+  }
 };
 </script>
 <style lang="css" scoped>

@@ -1,13 +1,12 @@
 <template>
-  <div class="rightSelf">
+  <div class="w-full invisible md:visible bg-white h-80 p-4 rounded-xl">
 
-    <div class="script">
-<!--      <span class="iconfont">&#xe823;</span> 创作中心-->
-      <a @click="$router.push('/back/scripts')">
-        <span class="iconfont">&#xe7c4;</span>草稿箱 ({{ scriptSize }})</a></div>
-    <div class="user">
-      <div class="img">
-        <!--        <img id="profilePhoto" alt="picture" :src="p(user.userProfilePhoto)">-->
+    <a class="block text-right hover:text-gray-500 text-sm h-5 w-full" @click="$router.push('/back/scripts')">
+      <!--      <span class="iconfont">&#xe823;</span> 创作中心-->
+      <span class="iconfont">&#xe7c4;</span>草稿箱 ({{ scriptSize }})
+    </a>
+    <div class=" bg-gray-100 w-full h-24 p-2 flex justify-between rounded-xl">
+      <div class="w-2/5 w-auto rounded-xl justify-self-center mx-2 float-left overflow-hidden">
         <a-avatar
             id="profilePhoto"
             :src="p(user.userProfilePhoto)"
@@ -18,29 +17,29 @@
           {{ user.userNickname }}
         </a-avatar>
       </div>
-      <div class="intro">
-        <div class="name"><span class="iconfont">&#xe6b3;</span>
+      <div class="intro text-center w-2/3">
+        <div class="text-base my-1.5 font-bold"><span class="iconfont">&#xe6b3;</span>
           {{ user.userNickname }}
         </div>
-        <div class="intro1"><span class="iconfont">&#xe78b;</span>
+        <div class="intro1 text-sm"><span class="iconfont">&#xe78b;</span>
           {{ user.userIntro }}
         </div>
       </div>
     </div>
 
-    <div class="read">
-      <a @click="$router.push('/back/articles')">
-        <div class="artSum"><span class="iconfont">&#xe610;</span> 文章 <h3> {{ articleSize }}</h3></div>
-      </a>
-      <a @click="$router.push('/back/comments')">
-        <div class="comSum"><span class="iconfont">&#xe654;</span> 评论 <h3>{{ commentSize }}</h3></div>
-      </a>
+    <div class="w-full px-5 py-3 h-20 flex justify-between items-center">
+      <div @click="$router.push('/back/articles')" class="h-full hover:cursor-pointer w-2/5 text-sm  p-2 align-middle rounded-xl bg-gray-100"><span
+          class="iconfont">&#xe610;</span>
+        文章 <h3> {{ articleSize }}</h3></div>
+      <div @click="$router.push('/back/comments')" class="h-full  hover:cursor-pointer w-2/5 text-sm p-2 rounded-xl bg-gray-100"><span
+          class="iconfont">&#xe654;</span>
+        评论 <h3>{{ commentSize }}</h3></div>
     </div>
-    <div class="news">
+    <div class="w-full h-12 text-center font-bold text-sm border-t py-2">
       <span class="iconfont">&#xe6db;</span>今日话题: <br>{{ hotTopic }}
     </div>
-    <div class="go">
-      <a id="go" @click="$router.push('/write/0')">开始创作 <span class="iconfont">&#xe823;</span></a>
+    <div class="rounded-xl bg-gray-200 w-1/2 text-center text font-medium mx-auto h-8 my-2 flex items-center justify-center">
+      <a  @click="$router.push('/write/0')">开始创作 <span class="iconfont">&#xe823;</span></a>
     </div>
 
   </div>
@@ -86,29 +85,25 @@ export default {
   position: fixed;
   float: right;
   top: 60px;
-  width: 20%;
-  left: calc(73% + 2px);
+  width: 17%;
+  left: calc(69% + 3px);
 }
 
 
 .rightSelf .script {
+
   width: 100%;
-  height: 30px;
-  padding: 5px;
+  height: 20px;
+  padding: 0 5px;
   position: relative;
-  line-height: 30px;
-  font-size: 13px;
-  font-weight: 600;
+  line-height: 20px;
+  font-size: 12px;
+  /*font-weight: 600;*/
+  display: block;
+  text-align: right;
+  /*color: #9ca29d;*/
 }
 
-.rightSelf .script a {
-  height: 100%;
-  /*width: 100%;*/
-  color: #9ca29d;
-  font-size: 13px;
-  float:right;
-  font-weight: 400;
-}
 
 .rightSelf .user {
   height: 105px;
@@ -142,7 +137,7 @@ export default {
 
 .intro {
   float: left;
-  width: 60%;
+  /*width: 60%;*/
   height: 105px;
   line-height: 40px;
   text-align: left;
@@ -166,7 +161,7 @@ export default {
   line-height: 20px;
   text-align: left;
   overflow: hidden;
-  -webkit-mask-image: -webkit-linear-gradient(bottom,rgba(0,0,0,0) 5%,rgb(18,71,85) 30%);
+  -webkit-mask-image: -webkit-linear-gradient(bottom, rgba(0, 0, 0, 0) 5%, rgb(18, 71, 85) 30%);
 }
 
 .read {
@@ -248,12 +243,15 @@ export default {
   line-height: 30px;
   margin: 0 5%;
 }
-.artSum{
-  float:left;
+
+.artSum {
+  float: left;
 }
-.comSum{
-  float:right;
+
+.comSum {
+  float: right;
 }
+
 .read .artSum:hover, .read .comSum:hover {
   background: #eef2f4;
   cursor: pointer;

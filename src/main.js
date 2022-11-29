@@ -1,5 +1,6 @@
 import {createApp} from 'vue'
 import App from './App.vue'
+import './tailwind.css'
 import axios from 'axios'
 import router from "@/router";
 import store from '@/store';
@@ -12,6 +13,8 @@ import '/public/static/css/daemon.css'
 import '/public/static/css/loading.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import bread from "@/components/pub/bread";
+import bigImg from "@/components/pub/bigImg";
+import user from "@/components/pub/user"
 
 
 // 第一步导入默认图片
@@ -99,7 +102,8 @@ app.config.globalProperties.$imgOnerror = e => {
     img.onerror = null
 }
 
-app.use(router).use(store).use(ElementPlus).use(Antd).component('bread', bread)
+app.use(router).use(store).use(ElementPlus).use(Antd)
+    .component('bread',bread).component('user',user).component('bigImg',bigImg)
 
 // app.use(APlayer, {
 //     defaultCover: '',

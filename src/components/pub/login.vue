@@ -16,7 +16,7 @@
           <a-tooltip>
             <template #title>刷新验证码</template>
             <a>
-              <img id="codeImg" :src="captchaUrl" :style="{marginTop: 10+'px',borderRadius:5+'px'}" alt="" @click="refreshCaptCha"></a>
+              <img id="codeImg" class="mx-auto" :src="captchaUrl" :style="{marginTop: 10+'px',borderRadius:5+'px'}" alt="" @click="refreshCaptCha"></a>
           </a-tooltip>
         </template>
         <template v-else>

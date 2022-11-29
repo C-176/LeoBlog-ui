@@ -1,7 +1,7 @@
 <template>
 
   <div ref="containerRef" class="editor">
-    <el-affix offset="60" position="top" style="position: absolute;width: 65%;top: 50px;z-index: 10;margin-left:-10px">
+    <el-affix offset="50" position="top" style="position: absolute;width: 55%;top: 50px;z-index: 10;margin-left:-10px">
       <!--          <a-affix offset-top="10" :target="this.$refs.containerRef" :style="{ }">-->
       <div>
         <Toolbar
@@ -13,11 +13,9 @@
       </div>
       <!--            </a-affix>-->
     </el-affix>
-    <Editor
-        style=" overflow-y: hidden; font-size: 16px; border-bottom: 1px solid #ccc;outline: none"
-        v-model="valueTitle"
-
-
+    <textarea
+        id="title"
+        v-model="valueTitle" placeholder="请输入标题...（最多100字）"
     />
     <Editor
         style="min-height: 500px;background: #fff;font-size: 14px;outline: none"
@@ -255,8 +253,21 @@ export default {
   margin-left: 10% !important;
   box-shadow: 1px 3px 11px #134857;
 }
+
 :deep(p img:hover) {
   cursor: pointer;
+}
+
+#title {
+  overflow-y: hidden;
+  font-size: 18px;
+  outline: none;
+  resize: none;
+  height: 30px;
+  line-height: 30px;
+  width: 100%;
+  border-width: 0;
+  border-bottom: 1px solid #ccc;
 }
 
 </style>

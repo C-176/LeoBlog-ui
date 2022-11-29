@@ -1,11 +1,11 @@
 <template>
-  <div class="copyRight">
+  <div class="w-full mt-2 invisible md:visible bg-white h-60 p-4 rounded-xl invisible md:visible">
     <a-carousel autoplay :dots="false" effect="fade">
 
       <div>
         <a-row :gutter="16">
-          <a-col :span="24" style="margin-top: 32px">
-            <a-statistic-countdown title="距离过年还有" :value="deadline" format="D 天 H 时 m 分 s 秒"/>
+          <a-col :span="24" >
+            <a-statistic-countdown class="text-xl" title="距离过年还有" :value="deadline" format="D 天 H 时 m 分 s 秒"/>
           </a-col>
         </a-row>
       </div>
@@ -76,7 +76,7 @@
       <div>
         <a-row>
           <a-col :span="12">
-            <a-statistic title="在线用户" :value="93" style="margin-right: 50px"/>
+            <a-statistic title="在线用户" :value="93" class="mr-5"/>
           </a-col>
           <a-col :span="12">
             <a-statistic title="总注册用户" :precision="0" :value="112"/>
@@ -84,9 +84,9 @@
         </a-row>
       </div>
     </a-carousel>
-    <div class="copyRight">
+    <div >
       @2021-2022 LeoBlog 版权所有<br>
-      <a href="https://beian.miit.gov.cn/">豫ICP备2022025200号</a>
+      <a href="https://beian.miit.gov.cn/" class="text-sm" >豫ICP备2022025200号</a>
 
     </div>
   </div>
@@ -116,29 +116,7 @@ export default {
 
 
 <style scoped>
-.copyRight {
-  text-align: center;
-  font-size: 12px;
-  /*margin-top: 20px;*/
-  /*margin-bottom: 20px;*/
-  color: #999;
-}
 
-.copyRight {
-  padding: 10px;
-  background: #fff;
-  height: auto;
-  border-radius: 5px;
-  position: fixed;
-  float: right;
-  bottom: 10px;
-  width: 20%;
-  left: calc(73% + 2px);
-}
-
-.whole div {
-  margin: 0 auto;
-}
 
 p {
   text-align: left;
@@ -157,6 +135,6 @@ p {
   color: #fff;
 }
 :deep(.ant-comment-content-detail p){
-  font-size: 1vw !important;
+  font-size: 0.8rem !important;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="header">
+  <div class="header invisible md:visible">
     <div class="logo">
       <router-link to="/home/index">
         <img id="logo" :src="p(logoSrc)" alt="">
@@ -357,7 +357,7 @@ export default {
   width: 120%;
   height: 120%;
   border-width: 0;
-  margin-top: -10px;
+  margin-top: -5px;
 }
 
 .header > a {

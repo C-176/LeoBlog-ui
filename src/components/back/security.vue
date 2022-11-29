@@ -323,7 +323,7 @@ export default {
 
 <style scoped>
 .whole {
-  margin-left: calc(17.5%);
+  margin-left: calc(22.5%);
   margin-top: 60px;
   height: 500px;
 

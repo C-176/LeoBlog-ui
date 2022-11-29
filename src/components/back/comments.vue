@@ -1,6 +1,7 @@
 <template>
   <bread>评论</bread>
-  <comment-template :comments="comments"></comment-template>
+  <div class="w-3/5 mx-auto mt-20 rounded bg-white p-5">
+  <comment-template :comments="comments"></comment-template></div>
   <a-back-top/>
 </template>
 
@@ -121,9 +122,9 @@ export default {
 
 <style scoped>
 .whole {
-  margin-left: calc(17.5%);
+  margin-left: calc(22.5%);
   margin-top: 60px;
-  width: 65%;
+  width: 55%;
   /*text-align: left;*/
   padding: 10px;
 

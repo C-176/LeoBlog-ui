@@ -21,8 +21,8 @@ export default {
 .whole {
   background: #fff;
   /*float: left;*/
-  width: 65%;
-  margin-left: calc(17.5%);
+  width: 55%;
+  margin-left: calc(22.5%);
   border-radius: 5px;
   padding: 10px;
   margin-top: 60px;
